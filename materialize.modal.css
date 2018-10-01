@@ -1,0 +1,159 @@
+.modal-header {
+    height: 55px;
+    line-height: 55px;
+    padding: 5px 24px !important;
+    padding: 10px 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background: #fff;
+    color: #00acc1;
+}
+.modal-content-dynamic {
+    height: auto;
+    width: auto;
+}
+.modal-windowbutton i {
+    font-size: 26px;
+    padding: 14px;
+    background: #fff;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    color: #9e9e9e;
+    cursor: pointer;
+    transition: .05s;
+}
+.modal-windowbutton i:hover {
+    background: rgba(20, 20, 20, 0.6) !important;
+    color: #fff;
+}
+.close-button-modal {
+    position: absolute;
+    margin-top: -55px;
+    right: 0px;
+}
+.close-button-modal i {
+    border-radius: 0px 1px 0px 0px;
+}
+.close-button-modal i:hover {
+    background: rgba(220, 50, 50, 0.8) !important;
+    color: #fff;
+}
+.maximize-button-modal {
+    position: absolute;
+    margin-top: -55px;
+    right: 55px;
+}
+.minimize-button-modal {
+    position: absolute;
+    margin-top: -55px;
+    right: 110px;
+}
+.modal-img-file {
+    display: none;
+}
+.modal-img-container {
+    width: 30%;
+    height: 25vw;
+    position: fixed;
+    margin-left: 60%;
+    top: 120px;
+    overflow: visible;
+    border: 5px solid #e0e0e0;
+    z-index: 5000;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+}
+.modal-img-container > img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.modal-change-img {
+    position: absolute !important;
+    top: -27.75px !important;
+    right: -30px !important;
+    z-index: 9000 !important;
+}
+.modal-delete-img {
+    position: absolute !important;
+    top: 40px !important;
+    right: -30px !important;
+    z-index: 9000 !important;
+}
+#minimized-wrapper {
+    height: 50px;
+    width: 100%;
+    position: fixed;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    left: 0;
+    bottom: 0px;
+    background: #fff;
+    z-index: 950;
+    -webkit-box-shadow: 0px -5px 12px -6px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0px -5px 12px -6px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px -5px 12px -6px rgba(0, 0, 0, 0.5);
+}
+.minimized-item {
+    float: left;
+    height: 50px;
+    padding: 13px 0px 13px 13px;
+    width: 20%;
+    border-right: 1px solid rgba(0, 0, 0, .1);
+    background: #fff;
+    font-weight: bold;
+    transition: .2s;
+}
+.minimized-item:hover {
+    cursor: default;
+    background: rgba(90, 90, 90, .1);
+}
+.minimized-item > div {
+    float: left;
+}
+.minimized-item > div.title {
+    color: #00acc1;
+    width: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.minimized-item > div.title:hover {
+    cursor: pointer;
+    color: #00bcd4;
+}
+.minimized-windowbuttons {
+    top: 0;
+    right: 0;
+    width: 20%;
+    height: 100%;
+}
+.minimized-windowbuttons > div {
+    color: #757575;
+    float: left;
+    width: 50%;
+}
+.minimized-windowbuttons > div > i {
+    border-radius: 3px;
+    font-size: 15px;
+    padding: 4px;
+    transition: .1s;
+}
+.minimized-windowbuttons > div > i:hover {
+    background: rgba(70, 70, 70, 0.1);
+    cursor: pointer;
+}
+.minimized-item:last {
+    border: none;
+}
+@media screen and (max-width: 992px) {
+    .modal {
+        height: 100vh !important;
+        max-height: 100vh !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        top: 0 !important;
+    }
+}

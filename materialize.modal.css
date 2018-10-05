@@ -178,6 +178,10 @@
     border-bottom: none !important;
     box-shadow: none !important;
 }
+.search-highlight-class {
+    background-color: #000;
+    color: #fff;
+}
 @media screen and (max-width: 992px) {
     .modal {
         height: 100vh !important;

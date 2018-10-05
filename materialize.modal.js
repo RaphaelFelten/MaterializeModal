@@ -1,127 +1,3 @@
-/* 
-
-
-******************************************************************** _-_-_-_-_-_-_-_-_-_-_-_ ********************************************************************
-********************************************************************                         ********************************************************************
-********************************************************************   :::::::::::::::::::   ********************************************************************
-********************************************************************                         ********************************************************************
-********************************************************************    MATERIALIZE MODAL    ********************************************************************
-********************************************************************                         ********************************************************************
-********************************************************************   :::::::::::::::::::   ********************************************************************
-********************************************************************                         ********************************************************************
-******************************************************************** -_-_-_-_-_-_-_-_-_-_-_- ********************************************************************
-
-
-This small library is supposed to simplify the usage of modals from the MaterializeCSS library, especially in a single-page application where they can be pretty useful.
-Use it like this:
-var modal = new Modal({
-    title: 'My First Modal',
-    openButton: '#open_myFirstModal',
-    width: 70,
-    height: 80,
-    onOpen: function(modal) {
-        modal.setContent('Some content');
-    }
-});
-
-
- * Options:
-    - title         -> string               => optional     default: nothing    * Can contain HTML          => title  of the modal
-    - width         -> integer              => optional     default: default width of Materialize modals    => width of the modal in %
-    - height        -> integer              => optional     default: default height of Materialize modals   => height of the modal in vh
-    - footerButtons -> string               => optional     default: nothing    * Can contain HTML          => buttons for the footer
-    - openButton    -> string               => optional     default: nothing                                => button that opens the modal (HTML query string)
-    - windowButtons -> boolean              => optional     default: true                                   => buttons on the top right to close/minimize/maximize the modal
-    - type          -> string               => optional     default: 'modal-fixed-footer'                   => type of the modal (fixed-footer, bottom sheet, ..)
-    - fixedContent  -> string               => optional     default: nothing    * Can contain HTML          => static content
-    - onOpen        -> function(modal,data) => optional     default: nothing                                => Executed each time the modal is opened
-    - onClose       -> function(modal)      => optional     default: nothing                                => Executed each time the modal is closed
- 
- 
- * Methods:
-    - open(data)                                -> opens the modal      => custom data can be passed in to be used in the onOpen function
-    - isOpen()                                  -> returns a boolean value indicating if the modal is currently open
-    - close(callback)                           -> closes the modal - an optional callback function can be passed in with the modal instance as parameter
-    - on(event, callback)                       -> binds an event (click, keypress, ...) to the modal - the callback gets the 'event' data
-    - setContent(content)                       -> removes all dynamic content from the modal (the fixedContent from the options will not be affected) and sets the content passed in
-    - addContent(content)                       -> adds content at the end of the modal
-    - removeContent(selector)                   -> removes content based on a query selection
-    - setTitle(title)                           -> sets the title of the modal
-    - getTitle()                                -> returns the current title of the modal
-    - setFooterButtons(buttons)                 -> removes the current footer buttons and sets the buttons passed in
-    - setAttribute(attribute, value)            -> sets a custom HTML attribute
-    - getAttribute(attribute)                   -> returns the value for the specified HTML attribute
-    - insertForm(options)                       -> inserts a form
-        * Options:
-          - width       -> optional - integer - width of the entire form in % - default: 100
-          - imageField  -> optional - boolean - adding an imageField to the right of the form - default: false
-          - fields      -> required - array of objects containing the form fields - Each field can be customized like this:
-            * name  - required - string
-            * label - required - string
-            * type  - required - string - available types: 
-                -> text_short       => standard input type="text"
-                -> text_long        => textarea
-                -> password         => password input
-                -> date             => datepicker (Datepicker.js library)
-                -> yes_no           => checkbox
-                -> custom           => select with single selection
-                -> custom_multiple  => select with multiple selections
-            * chips - required when using type 'custom' or 'custom multiple' - array of objects
-                -> example: [{tag: '1'}, {tag: '2'}, {tag: '3'}]
-            * dropzone - optional - boolean value to add a dropzone for that field - default: false - Dropzone.js library
-            * icon  - optional - string (material-icons)
-            * width - optional - integer (width in %) - when using this on 2 or more consecutive fields and their combined values is 100 or less, the fields will be on one line
-            * attributes - optional - array of objects
-                -> example: [{key: 'customAttribute1', val: 'yolo'}, {key: 'customAttribute2', val: 'swag'}, {key: 'customAttribute3', val: 'Hello World'}]
-                -> if you want the form field to be required, add the attribute {key: 'required', val: 'true'}
-    - setFormValues(values)                     -> sets the value for the form fields
-        * the parameter must be an object containing all values. It should look something like this:
-          {formFieldName1: 'value1', formFieldName2: 'value2', formFieldName3: 'value3', formFieldName4: 'value4',}
-          In order for this to work, the property name must be equal to the name we gave the field in the 'insertForm' function
-          Setting the value for type 'custom' or 'custom_multiple' requires an array with the selected element(s), the structure must be similar to the 'chips' array when creating the form field
-          Setting the value for a 'yes_no' field requires a boolean value
-    - getFormValues(mode)                       -> returns an array of objects with all fields and values
-        * the function gets one optional parameter to change the structure of the data it returns - 'single' or 'combined' - default is 'combined'
-    - getFormFields()                           -> returns all HTML form fields
-    - getFormField(field)                       -> returns one HTML form field - parameter must be a string equal to the name of the field given in the 'insertForm' function
-    - clearForm()                               -> clears the form
-    - hideFormField([fields])                   -> hides form fields - parameter is an array of fields (each element in the array must be a string equal to the name of the field given in the 'insertForm' function)
-    - formFieldChange(event, field, callback)   -> adds an event listener for a formField (change, keyup, keypress, ..) - the callback gets the 'event' data
-    - displayImage(src)                         -> adds an image HTML field to the modal
-    - displayFormImage(src)                     -> adds the path of the image to the already existing image field
-    - hideFormImageDeleteButton()               -> hides the 'delete' button of the image field
-    - showFormImageDeleteButton()               -> shows the 'delete' button of the image field
-    - removeImage()                             -> removes the image
-    - getImage()                                -> returns a FormData object of the selected image
-    - hideDropzone()                            -> hides the Dropzone field
-    - addChipsField(chips)                      -> adds a chips field to a form - the parameter is an array of chips similar to the structure of chips in a form field
-    - insertCollection(options)                 -> adds a collection to the modal
-        * Options:
-          - width       -> integer - width of the collection in % - default: 100
-          - sortable    -> boolean - indicate if the collection items should be sortable - works with the library Sortable.js
-          - items       -> array - array of objects (collection items)
-            * Each item has a couple of properties:
-              - label -> required - string - the label of the item
-              - attributes -> optional - object - custom HTML attributes for the item - example: {customAttr1: 'yolo', customAttr2: 'swag'}
-              - secondaryContent -> optional - array - array of secondary-content items. Each item has some properties:
-                * icon - required - string - material-icons
-                * class - optional - string - a custom class for the item
-                * color - optional - string - CSS color for the item
-                * tooltip - optional - string - tooltip for the item
-          - onInserted  -> function - executed when the collection has been inserted
-    - getCollection()                           -> returns the HTML collection
-    - getCollectionItems()                      -> returns all HTML collection items
- 
- 
- * Helper:
-    - Adding the class 'modal-submit-form' to an element triggers its click event when pressing the Enter key
- 
-
-
-*/
-
-
-
 var M_Modal = {};
 M_Modal.instances = [];
 
@@ -806,4 +682,107 @@ function dynamicSort(property, order) {
         var result = (aTemp < bTemp) ? -1 : (aTemp > bTemp) ? 1 : 0;
         return result * sortOrder;
     }
+}
+
+jQuery.fn.searchAndHighlight = function (options) {
+    var e, p, c, h, t, d, dt, cc, ccn, s, cb;
+    options.textElement ? e = options.textElement : e = '.search-highlight-text';
+    options.parentElement ? p = options.parentElement : p = '.search-highlight-parent';
+    options.highlightClass ? c = options.highlightClass : c = 'search-highlight-class';
+    options.hideElements == undefined ? h = true : h = options.hideElements;
+    options.transitionTime ? t = options.transitionTime : t = 100;
+    options.delay == undefined ? d = false : d = options.delay;
+    options.delayTime ? dt = options.delayTime : dt = 500;
+    options.characterCountStart == undefined ? cc = false : cc = options.characterCountStart;
+    options.characterCountStartNumber ? ccn = options.characterCountStartNumber : ccn = 3;
+    if (options.started) s = options.started;
+    if (options.completed) cb = options.completed;
+    var to = 0;
+    this.bind('keyup', function () {
+        if (cc) {
+            if ($(this).val().length > ccn - 1) {
+                if (d) {
+                    clearTimeout(to);
+                    var that = this;
+                    to = setTimeout(function () {
+                        if (s) s();
+                        searchAndHighlight(that, e, p, c, h, t, function (e) {
+                            if (cb) cb(e);
+                        });
+                    }, dt);
+                } else {
+                    if (s) s();
+                    searchAndHighlight(this, e, p, c, h, t, function (e) {
+                        if (cb) cb(e);
+                    });
+                }
+            }
+        } else {
+            if (d) {
+                clearTimeout(to);
+                var that = this;
+                to = setTimeout(function () {
+                    if (s) s();
+                    searchAndHighlight(that, e, p, c, h, t, function (e) {
+                        if (cb) cb(e);
+                    });
+                }, dt);
+            } else {
+                if (s) s();
+                searchAndHighlight(this, e, p, c, h, t, function (e) {
+                    if (cb) cb(e);
+                });
+            }
+        }
+    });
+};
+
+function searchAndHighlight(i, e, p, c, h, t, cb) {
+    var filter = $(i).val(),
+        len = filter.length,
+        listLength = $(e).length;
+    $(e).each(function (index) {
+        var str = $(this).text(),
+            strLen = str.length,
+            src = str.search(new RegExp(filter, 'i')),
+            subBody = str.substring(src, src + len),
+            subPre, subAfter;
+        if (filter < 1) {
+            if (h) {
+                $(this).closest(p).show(t, function () {
+                    if (index == listLength - 1) {
+                        if (cb) cb($(i));
+                    }
+                });
+            }
+            $(this).find('.' + c).after($(this).find('.' + c).text());
+            $(this).find('.' + c).remove();
+            subBody = '';
+        } else
+        if (src < 0) {
+            if (h) {
+                $(this).closest(p).hide(t, function () {
+                    if (index == listLength - 1) {
+                        if (cb) cb($(i));
+                    }
+                });
+            }
+            $(this).find('.' + c).after($(this).find('.' + c).text());
+            $(this).find('.' + c).remove();
+            subBody = '';
+        } else {
+            if (h) {
+                $(this).closest(p).show(t, function () {
+                    if (index == listLength - 1) {
+                        if (cb) cb($(i));
+                    }
+                });
+            }
+            if (src == 0) subPre = '';
+            else subPre = str.substring(0, src);
+            if (src == strLen - 1) subAfter = '';
+            else subAfter = str.substring((src + len), strLen);
+            $(this).html(subPre + '<span class="' + c + '">' + subBody + '</span>' + subAfter);
+        }
+    });
 }

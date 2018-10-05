@@ -66,16 +66,15 @@ Inserts a form.
 - fields - An array of objects containing the form fields. Each field can be customized:
   - name - required - String - must be unique!
   - label - required - String
-  - width - optional - integer - width in %
-  When using this on 2 or more consecutive fields and their combined values is 100 or less, the fields will be on one line.
+  - width - optional - integer - width in % - When using this on 2 or more consecutive fields and their combined values is 100 or less, the fields will be on one line.
   - type - required - String - Available types:
-   - text_short (standard input)
-   - text_long (textarea)
-   - password (password input)
-   - date (Datepicker.js library)
-   - yes_no (checkbox)
-   - custom (select with single selection)
-   - custom_multiple (select with multiple selections)
+    - text_short (standard input)
+    - text_long (textarea)
+    - password (password input)
+    - date (Datepicker.js library)
+    - yes_no (checkbox)
+    - custom (select with single selection)
+    - custom_multiple (select with multiple selections)
   - chips - required if using type custom or custom_multiple. It's an array of objects containing the options.
   For example: `[{tag: '1'}, {tag: '2'}, {tag: '3'}]`
 
@@ -132,10 +131,10 @@ Each item has a couple of properties:
   - secondaryContent - optional - Array - Array of secondary-content items
   Each item has some properties:
     - icon - required - String - A material-icons icon string
-	  - class - optional - String - A custom class for the item
-	  - color - optional - String - Hexadecimal color string
-	  - tooltip - optional - String - Tooltip for the item
-    - onInserted - Function - Executed when the collection has been inserted
+    - class - optional - String - A custom class for the item
+    - color - optional - String - Hexadecimal color string
+    - tooltip - optional - String - Tooltip for the item
+  - onInserted - Function - Executed when the collection has been inserted
 #### getCollection()
 Returns the HTML collection.
 #### getCollectionItems()

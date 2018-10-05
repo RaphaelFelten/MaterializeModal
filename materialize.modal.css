@@ -148,6 +148,36 @@
 .minimized-item:last {
     border: none;
 }
+.modal-search-ctn {
+    position: absolute;
+    background: transparent;
+    border-radius: 3px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    top: 0px;
+    padding: 0;
+    right: 167px;
+    width: 20%;
+    height: 55px;
+    line-height: 55px;
+}
+.modal-search-ctn > i {
+    position: absolute;
+    color: #757575;
+    font-size: 18px;
+    top: 20px;
+    left: 5px;
+}
+.modal-search-ctn > input {
+    border-bottom: none !important;
+    color: #757575;
+    margin: 0 !important;
+    padding-left: 27px !important;
+    height: 55px !important;
+}
+.modal-search-ctn > input:focus {
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
 @media screen and (max-width: 992px) {
     .modal {
         height: 100vh !important;

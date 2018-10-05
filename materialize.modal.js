@@ -141,6 +141,7 @@ class Modal {
         this.onOpen = opt.onOpen || null;
         this.onClose = opt.onClose || null;
         this.hasForm = false;
+        this.wasOpened = false;
         this.fixedContent = opt.fixedContent || '';
         this.template = '<div id="' + this.name + '" class="modal ' + this.type + '" style="' + this.style + '"><div class="modal-header"><h4><span style="font-size: 22px;">' + this.title + '</span></h4></div><div class="modal-content" style="padding-top: 17px; height: calc(100% - 112px);">' + this.fixedContent + '<div class="modal-content-dynamic"></div></div><div class="modal-footer">' + this.footerButtons + '</div>' + this.windowButtons + '</div>';
         $('body').append(this.template);
@@ -456,9 +457,26 @@ class Modal {
         var itemTemplate = opt.template || $('<li class="collection-item"><div class="collection-item-content"></div></li>');
         var items = '';
         if (opt.sortable) itemTemplate.css('cursor', 'move');
+        if (opt.searchBar) {
+            var searchBar = $('<div class="modal-search-ctn"><i class="material-icons">search</i><input type="text" placeholder="Suchen.." /></div>');
+            if (!this.wasOpened) {
+                $('#' + this.name).find('.modal-header').append(searchBar);
+            }
+            var self = this;
+            searchBar.find('input').searchAndHighlight({
+                textElement: '#' + self.name + ' .collection-item .title',
+                parentElement: '#' + self.name + ' .collection-item'
+            });
+        }
         opt.items.forEach(function (item) {
-            var element = itemTemplate;
-            element.find('div').html(item.label);
+            var style = item.style || '';
+            if (item.customTemplate) {
+                var element = item.customTemplate;
+            } else {
+                var element = itemTemplate;
+                element.find('div').html('');
+                element.find('div').append('<span class="title" style="' + style + '">' + item.label + '</span>');
+            }
             if (item.attributes) {
                 Object.keys(item.attributes).forEach(function (key) {
                     if (item.attributes.hasOwnProperty(key)) element.attr(key, item.attributes[key]);
@@ -480,6 +498,7 @@ class Modal {
             container.append(element[0].outerHTML);
         });
         this.setContent(container);
+        this.wasOpened = true;
         if (opt.onInserted) opt.onInserted();
     }
     getCollection() {

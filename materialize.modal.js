@@ -334,14 +334,20 @@ class Modal {
         var items = '';
         if (opt.sortable) itemTemplate.css('cursor', 'move');
         if (opt.searchBar) {
-            var searchBar = $('<div class="modal-search-ctn"><i class="material-icons">search</i><input type="text" placeholder="Suchen.." /></div>');
+            var searchBar = $('<div class="modal-search-ctn"><i class="material-icons icon">search</i><input type="text" placeholder="Suchen.." /><i class="material-icons modal-search-clear">highlight_off</i></div>');
             if (!this.wasOpened) {
                 $('#' + this.name).find('.modal-header').append(searchBar);
+            } else {
+                $('#' + this.name).find('.modal-search-ctn input').val('');
             }
             var self = this;
             searchBar.find('input').searchAndHighlight({
                 textElement: '#' + self.name + ' .collection-item .title',
                 parentElement: '#' + self.name + ' .collection-item'
+            });
+            searchBar.find('.modal-search-clear').click(function () {
+                searchBar.find('input').val('');
+                searchBar.find('input').searchAndHighlight();
             });
         }
         opt.items.forEach(function (item) {
@@ -682,107 +688,4 @@ function dynamicSort(property, order) {
         var result = (aTemp < bTemp) ? -1 : (aTemp > bTemp) ? 1 : 0;
         return result * sortOrder;
     }
-}
-
-jQuery.fn.searchAndHighlight = function (options) {
-    var e, p, c, h, t, d, dt, cc, ccn, s, cb;
-    options.textElement ? e = options.textElement : e = '.search-highlight-text';
-    options.parentElement ? p = options.parentElement : p = '.search-highlight-parent';
-    options.highlightClass ? c = options.highlightClass : c = 'search-highlight-class';
-    options.hideElements == undefined ? h = true : h = options.hideElements;
-    options.transitionTime ? t = options.transitionTime : t = 100;
-    options.delay == undefined ? d = false : d = options.delay;
-    options.delayTime ? dt = options.delayTime : dt = 500;
-    options.characterCountStart == undefined ? cc = false : cc = options.characterCountStart;
-    options.characterCountStartNumber ? ccn = options.characterCountStartNumber : ccn = 3;
-    if (options.started) s = options.started;
-    if (options.completed) cb = options.completed;
-    var to = 0;
-    this.bind('keyup', function () {
-        if (cc) {
-            if ($(this).val().length > ccn - 1) {
-                if (d) {
-                    clearTimeout(to);
-                    var that = this;
-                    to = setTimeout(function () {
-                        if (s) s();
-                        searchAndHighlight(that, e, p, c, h, t, function (e) {
-                            if (cb) cb(e);
-                        });
-                    }, dt);
-                } else {
-                    if (s) s();
-                    searchAndHighlight(this, e, p, c, h, t, function (e) {
-                        if (cb) cb(e);
-                    });
-                }
-            }
-        } else {
-            if (d) {
-                clearTimeout(to);
-                var that = this;
-                to = setTimeout(function () {
-                    if (s) s();
-                    searchAndHighlight(that, e, p, c, h, t, function (e) {
-                        if (cb) cb(e);
-                    });
-                }, dt);
-            } else {
-                if (s) s();
-                searchAndHighlight(this, e, p, c, h, t, function (e) {
-                    if (cb) cb(e);
-                });
-            }
-        }
-    });
-};
-
-function searchAndHighlight(i, e, p, c, h, t, cb) {
-    var filter = $(i).val(),
-        len = filter.length,
-        listLength = $(e).length;
-    $(e).each(function (index) {
-        var str = $(this).text(),
-            strLen = str.length,
-            src = str.search(new RegExp(filter, 'i')),
-            subBody = str.substring(src, src + len),
-            subPre, subAfter;
-        if (filter < 1) {
-            if (h) {
-                $(this).closest(p).show(t, function () {
-                    if (index == listLength - 1) {
-                        if (cb) cb($(i));
-                    }
-                });
-            }
-            $(this).find('.' + c).after($(this).find('.' + c).text());
-            $(this).find('.' + c).remove();
-            subBody = '';
-        } else
-        if (src < 0) {
-            if (h) {
-                $(this).closest(p).hide(t, function () {
-                    if (index == listLength - 1) {
-                        if (cb) cb($(i));
-                    }
-                });
-            }
-            $(this).find('.' + c).after($(this).find('.' + c).text());
-            $(this).find('.' + c).remove();
-            subBody = '';
-        } else {
-            if (h) {
-                $(this).closest(p).show(t, function () {
-                    if (index == listLength - 1) {
-                        if (cb) cb($(i));
-                    }
-                });
-            }
-            if (src == 0) subPre = '';
-            else subPre = str.substring(0, src);
-            if (src == strLen - 1) subAfter = '';
-            else subAfter = str.substring((src + len), strLen);
-            $(this).html(subPre + '<span class="' + c + '">' + subBody + '</span>' + subAfter);
-        }
-    });
 }

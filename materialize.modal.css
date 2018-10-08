@@ -2,7 +2,6 @@
     height: 55px;
     line-height: 55px;
     padding: 5px 24px !important;
-    padding: 10px 24px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     background: #fff;
     color: #00acc1;
@@ -160,16 +159,30 @@
     height: 55px;
     line-height: 55px;
 }
-.modal-search-ctn > i {
+.modal-search-ctn > i.icon {
     position: absolute;
     color: #757575;
     font-size: 18px;
     top: 20px;
     left: 5px;
 }
+.modal-search-ctn > i.modal-search-clear {
+    position: absolute;
+    color: #949494;
+    font-size: 20px;
+    top: 18px;
+    right: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: .1s;
+}
+.modal-search-ctn > i.modal-search-clear:hover {
+    color: #757575;
+}
 .modal-search-ctn > input {
     border-bottom: none !important;
     color: #757575;
+    width: calc(100% - 60px) !important;
     margin: 0 !important;
     padding-left: 27px !important;
     height: 55px !important;
@@ -177,10 +190,6 @@
 .modal-search-ctn > input:focus {
     border-bottom: none !important;
     box-shadow: none !important;
-}
-.search-highlight-class {
-    background-color: #000;
-    color: #fff;
 }
 @media screen and (max-width: 992px) {
     .modal {

@@ -142,5 +142,5 @@ Returns the HTML collection.
 Returns all HTML collection items.
 
 ## Helper
-#### Submit form by pressing the Enter key
+##### Submit form by pressing the Enter key
 Adding the class 'modal-submit-form' to an element triggers its click event when pressing the Enter key

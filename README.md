@@ -123,6 +123,7 @@ Inserts a collection.
 ###### Options:
 - width - Integer - Width of the collection in % - default = 100
 - sortable - Boolean - Indicates if the collection items should be sortable - works with the library Sortable.js
+- searchBar - Boolean - Indicates if a search bar should be added
 - items - required - Array - Array of objects.
 Each item has a couple of properties:
   - label - required - String - The label of the item

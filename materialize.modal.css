@@ -168,16 +168,18 @@
 }
 .modal-search-ctn > i.modal-search-clear {
     position: absolute;
-    color: #949494;
-    font-size: 20px;
-    top: 18px;
+    color: #fff;
+    font-size: 12px;
+    padding: 3px;
+    background: #bdbdbd;
+    top: 19px;
     right: 5px;
     cursor: pointer;
     border-radius: 50%;
     transition: .1s;
 }
 .modal-search-ctn > i.modal-search-clear:hover {
-    color: #757575;
+    background: #949494;
 }
 .modal-search-ctn > input {
     border-bottom: none !important;

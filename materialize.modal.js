@@ -334,7 +334,7 @@ class Modal {
         var items = '';
         if (opt.sortable) itemTemplate.css('cursor', 'move');
         if (opt.searchBar) {
-            var searchBar = $('<div class="modal-search-ctn"><i class="material-icons icon">search</i><input type="text" placeholder="Suchen.." /><i class="material-icons modal-search-clear">highlight_off</i></div>');
+            var searchBar = $('<div class="modal-search-ctn"><i class="material-icons icon">search</i><input type="text" placeholder="Suchen.." /><i class="material-icons modal-search-clear">clear</i></div>');
             if (!this.wasOpened) {
                 $('#' + this.name).find('.modal-header').append(searchBar);
             } else {

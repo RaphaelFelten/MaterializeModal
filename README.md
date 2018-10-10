@@ -148,7 +148,7 @@ Adding the class 'modal-submit-form' to an element triggers its click event when
 ## Complete example
 Here's a more complete example:
 
-```
+```javascript
 // Modal creation
 var modalUsers = new Modal({
     width: 50,

@@ -91,11 +91,11 @@ Setting the value for type 'custom' or 'custom_multiple' requires an array with 
 Setting the value for a 'yes_no' field requires a boolean value.
 #### getFormValues(mode)
 Returns the form values. An optional argument can be passed in to specify how the data should be structured:
-`single` or `combined` - default is combined
+`single` or `combined` - default is combined.
 #### getFormFields()
-Returns all HTML form fields
+Returns all HTML form fields.
 #### getFormField(field)
-Returns the specified HTML form field. Argument must be a string equal to the name of the field given in the `insertForm` function
+Returns the specified HTML form field. Argument must be a string equal to the name of the field given in the `insertForm` function.
 #### clearForm()
 Clears the form.
 #### hideFormField(fields)
@@ -113,7 +113,7 @@ Shows the delete button of the image field.
 #### removeImage()
 Removes the image.
 #### getImage()
-Returns a `FormData` object the selected image.
+Returns a `FormData` object of the selected image.
 #### hideDropzone()
 Hides the Dropzone field.
 #### addChipsField(chips)
@@ -133,7 +133,7 @@ Each item has a couple of properties:
   Each item has some properties:
     - icon - required - String - A material-icons icon string
     - class - optional - String - A custom class for the item
-    - color - optional - String - Hexadecimal color string
+    - color - optional - String - CSS color string (#00bcd4, rgba(250,40,60,0.5), ..)
     - tooltip - optional - String - Tooltip for the item
   - onInserted - Function - Executed when the collection has been inserted
 #### getCollection()
@@ -143,7 +143,7 @@ Returns all HTML collection items.
 
 ## Helper
 ##### Submit form by pressing the Enter key
-Adding the class 'modal-submit-form' to an element triggers its click event when pressing the Enter key
+Adding the class 'modal-submit-form' to an element triggers its click event when pressing the Enter key.
 
 ## Complete example
 Here's a more complete example:

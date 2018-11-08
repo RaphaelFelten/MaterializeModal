@@ -6,6 +6,9 @@ No JQuery required.
 I've been working on a single-page application for our company in which I heavily used modals for all the functionality. I quickly realized that adding all those modals to the HTML file was kind of a mess and doing anything dynamic was a pain in the ass (forms, collections, ..).
 That's why I've decided to develop this small library. I just wanted to share this in case someone might find it helpful. Feel free to suggest any improvements that could be made.
 
+## Installation
+Just include the js & css file in your HTML file.
+
 ## Example:
 ```javascript
 let modal = new Modal({

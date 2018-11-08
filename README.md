@@ -13,7 +13,7 @@ let modal = new Modal({
   openButton: '#open_myFirstModal',
   width: 70,
   height: 80,
-  onOpen: function(modal) {
+  onOpen: (modal) => {
     modal.setContent('Some content');
   }
 });

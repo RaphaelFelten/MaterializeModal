@@ -1,8 +1,10 @@
 # MaterializeModal
 Work more efficiently with modals from the MaterializeCSS framework.
 
-I've been working on a SPA for our company in which I heavily used modals for all the functionality. I quickly realized that adding all those modals to the HTML file was kind of a mess and doing anything dynamic was a pain in the ass (forms, collections, ..).
-That's why I've decided to develop this small library. I just wanted to share this in case someone might find it helpful. I can't really say that it's well done, I just added a bunch of stuff that I found interesting and helpful to have.
+No jQuery is required!
+
+I've been working on a single-page application for our company in which I heavily used modals for all the functionality. I quickly realized that adding all those modals to the HTML file was kind of a mess and doing anything dynamic was a pain in the ass (forms, collections, ..).
+That's why I've decided to develop this small library. I just wanted to share this in case someone might find it helpful.
 
 ## Example:
 ```javascript
@@ -25,7 +27,7 @@ var modal = new Modal({
 | height | Integer | Default height of the MaterializeCSS library | height of the modal in 'vh' |
 | footerButtons | String | null | Buttons which will appear in the footer of the modal - Can contain HTML |
 | openButton | String | null | HTML query string of the element that opens the modal |
-| windowButtons | Boolean | true | Buttons on the top right of the modal (close, minimize, maximize) |
+| windowButtons | Boolean | true | Buttons on the top right of the modal (minimize, maximize, close) |
 | fixedContent | String | null | Static content - Can contain HTML |
 | onOpen | Function | null | Executed each time the modal is opened. Gets two parameters: modal, data - the second argument can contain any kind of custom data which can be passed in through the open() method |
 | onClose | Function | null | Executed each time the modal is closed. Gets the modal object as its argument |
@@ -44,22 +46,22 @@ Binds an event (click, keypress, ...) to the modal. The callback gets the `event
 #### setContent(content)
 Removes all  dynamic content from the modal (the fixedContent from the options will not be affected) and sets the content passed in. The content must be a string.
 #### addContent(content)
-Adds content to the end of the modal. Content must be a string.
+Adds content to the end of the modal. Content must be a string and may contain HTML.
 #### removeContent(selector)
 Removes content based on a HTML query selection. For example:
 `modal.removeContent('.myNiceDiv')`
 #### setTitle(title)
-Sets the title of the modal. Argument must be a string.
+Sets the title of the modal. Argument must be a string and can contain HTML.
 #### getTitle()
 Returns the current title of the modal.
 #### setFooterButtons(buttons)
-Removes the current buttons and sets the buttons passed in (string).
+Removes the current buttons and sets the buttons passed in (HTML string).
 #### setAttribute(attribute, value)
 Sets a custom HTML attribute.
 #### getAttribute(attribute)
 Returns the value of the specified attribute.
 #### insertForm(options)
-Inserts a form.
+Inserts a form:
 ###### Options
 - width - Integer - width of the form in % - default = 100)
 - imageField - Boolean - Specify if an image field should be added to the form - default = false)

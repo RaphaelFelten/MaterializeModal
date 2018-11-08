@@ -10,40 +10,36 @@
     height: auto;
     width: auto;
 }
-.modal-windowbutton i {
-    font-size: 26px;
-    padding: 14px;
-    background: #fff;
+.modal-windowButtons {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 165px;
+    height: 54px;
     border-left: 1px solid rgba(0, 0, 0, 0.1);
-    color: #9e9e9e;
+}
+.modal-windowButtons > div {
+    float: left;
+    width: 55px;
+    height: 100%;
     cursor: pointer;
+    color: #9e9e9e;
     transition: .05s;
 }
-.modal-windowbutton i:hover {
+.modal-windowButtons > div:last-child {
+    float: left;
+    width: 54px;
+}
+.modal-windowButtons > div > i {
+    font-size: 20px;
+    padding: 17px;
+}
+.modal-windowButtons > div:hover {
     background: rgba(20, 20, 20, 0.6) !important;
     color: #fff;
 }
-.close-button-modal {
-    position: absolute;
-    margin-top: -55px;
-    right: 0px;
-}
-.close-button-modal i {
-    border-radius: 0px 1px 0px 0px;
-}
-.close-button-modal i:hover {
+.modal-windowButtons > div:last-child:hover {
     background: rgba(220, 50, 50, 0.8) !important;
-    color: #fff;
-}
-.maximize-button-modal {
-    position: absolute;
-    margin-top: -55px;
-    right: 55px;
-}
-.minimize-button-modal {
-    position: absolute;
-    margin-top: -55px;
-    right: 110px;
 }
 .modal-img-file {
     display: none;
@@ -154,14 +150,14 @@
     border-left: 1px solid rgba(0, 0, 0, 0.1);
     top: 0px;
     padding: 0;
-    right: 167px;
-    width: 20%;
+    right: 166px;
+    width: 30%;
     height: 55px;
     line-height: 55px;
 }
 .modal-search-ctn > i.icon {
     position: absolute;
-    color: #757575;
+    color: #bdbdbd;
     font-size: 18px;
     top: 20px;
     left: 5px;
@@ -171,7 +167,7 @@
     color: #fff;
     font-size: 12px;
     padding: 3px;
-    background: #bdbdbd;
+    background: #e0e0e0;
     top: 19px;
     right: 5px;
     cursor: pointer;
@@ -179,7 +175,7 @@
     transition: .1s;
 }
 .modal-search-ctn > i.modal-search-clear:hover {
-    background: #949494;
+    background: #9e9e9e;
 }
 .modal-search-ctn > input {
     border-bottom: none !important;

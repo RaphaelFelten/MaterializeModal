@@ -362,7 +362,7 @@ class Modal {
         if (opt.searchBar) {
             let searchBar = document.createElement('DIV');
             searchBar.classList.add('modal-search-ctn');
-            searchBar.innerHTML = '<i class="material-icons icon">search</i><input type="text" placeholder="Suchen.." /><i class="material-icons modal-search-clear">clear</i>';
+            searchBar.innerHTML = '<i class="material-icons icon">search</i><input type="text" /><i class="material-icons modal-search-clear">clear</i>';
             if (!this.wasOpened) document.querySelector('#' + this.name + ' .modal-header').appendChild(searchBar);
             else document.querySelector('#' + this.name + ' .modal-search-ctn input').value = '';
             searchInCollection({

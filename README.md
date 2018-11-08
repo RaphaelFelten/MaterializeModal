@@ -8,7 +8,7 @@ That's why I've decided to develop this small library. I just wanted to share th
 
 ## Example:
 ```javascript
-var modal = new Modal({
+let modal = new Modal({
   title: 'My First Modal',
   openButton: '#open_myFirstModal',
   width: 70,

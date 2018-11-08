@@ -151,7 +151,8 @@ class Modal {
         }
         if (opt.values) return this.setFormValues(opt.values);
         M.FormSelect.init(document.querySelectorAll('select'));
-        M.Datepicker.init(this.selectAll('.datepicker'), M_Modal.datePickerOptions);
+        M.Datepicker.init(this.selectAll('.datepicker'), M_Modal.datePickerOptions || {});
+        M.Timepicker.init(this.selectAll('.timepicker'), M_Modal.timePickerOptions || {});
         M.updateTextFields();
     }
     setFormValues(obj) {
@@ -524,6 +525,10 @@ function modalFormField(opt) {
             break;
         case 'date':
             return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><input ' + disabled + ' id="' + id + '" value="' + value + '" class="form-field datepicker" type="text">' + contentToAppend + '</div>';
+            break;
+        case 'time':
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><input ' + disabled + ' id="' + id + '" value="' + value + '" class="form-field timepicker" type="text">' + contentToAppend + '</div>';
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><input ' + disabled + ' id="' + id + '" value="' + value + '" class="form-field timepicker" type="text">' + contentToAppend + '</div>';
             break;
         case 'custom':
             for (let i = 0; i < opt.chips.length; i++) {

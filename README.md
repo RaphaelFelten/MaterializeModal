@@ -7,7 +7,7 @@ I've been working on a single-page application for our company in which I heavil
 That's why I've decided to develop this small library. I just wanted to share this in case someone might find it helpful. Feel free to suggest any improvements that could be made.
 
 ## Installation
-Just include the js & css file in your HTML file.
+Simply include `materialize.modal.min.js` & `materialize.modal.min.css` in your HTML file.
 
 ## Example:
 ```javascript

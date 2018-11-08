@@ -91,11 +91,11 @@ Setting the value for type 'custom' or 'custom_multiple' requires an array with 
 Setting the value for a 'yes_no' field requires a boolean value.
 #### getFormValues(mode)
 Returns the form values. An optional argument can be passed in to specify how the data should be structured:
-`single` or `combined` - default is combined
+`single` or `combined` - default is combined.
 #### getFormFields()
-Returns all HTML form fields
+Returns all HTML form fields.
 #### getFormField(field)
-Returns the specified HTML form field. Argument must be a string equal to the name of the field given in the `insertForm` function
+Returns the specified HTML form field. Argument must be a string equal to the name of the field given in the `insertForm` function.
 #### clearForm()
 Clears the form.
 #### hideFormField(fields)
@@ -113,7 +113,7 @@ Shows the delete button of the image field.
 #### removeImage()
 Removes the image.
 #### getImage()
-Returns a `FormData` object the selected image.
+Returns a `FormData` object of the selected image.
 #### hideDropzone()
 Hides the Dropzone field.
 #### addChipsField(chips)
@@ -133,7 +133,7 @@ Each item has a couple of properties:
   Each item has some properties:
     - icon - required - String - A material-icons icon string
     - class - optional - String - A custom class for the item
-    - color - optional - String - Hexadecimal color string
+    - color - optional - String - CSS color string (#00bcd4, rgba(250,40,60,0.5), ..)
     - tooltip - optional - String - Tooltip for the item
   - onInserted - Function - Executed when the collection has been inserted
 #### getCollection()
@@ -143,4 +143,94 @@ Returns all HTML collection items.
 
 ## Helper
 ##### Submit form by pressing the Enter key
-Adding the class 'modal-submit-form' to an element triggers its click event when pressing the Enter key
+Adding the class 'modal-submit-form' to an element triggers its click event when pressing the Enter key.
+
+## Complete example
+Here's a more complete example:
+
+```javascript
+// Modal creation
+var modalUsers = new Modal({
+    width: 50,
+    height: 80,
+    openButton: '.open-modalUsers',
+    title: '<b>User management</b>',
+    footerButtons: '<a href="#!" class="waves-effect btn btn-float grey darken-1 left print"><i class="material-icons">print</i></a><a href="#!" id="newUser" class="modal-action waves-effect btn-flat cyan"><i class="material-icons" style="color: #fff;">add</i></a>',
+    onOpen: function (modal) {
+        getUsers(function (users) {
+            var collection = [];
+            for (let user of users) {
+                collection.push({
+                    label: user.username.toUpperCase() + ' - ' + user.firstname + ' ' + user.lastname,
+                    attributes: {
+                        username: user.username,
+                        uid: user._id
+                    },
+                    secondaryContent: [{
+                        icon: 'edit',
+                        class: 'edit-user',
+                        color: '#00838f'
+                    }, {
+                        icon: 'lock',
+                        class: 'update-user-password',
+                        color: '#757575'
+                    }, {
+                        icon: 'delete',
+                        class: 'delete-user',
+                        color: '#e53935'
+                    }]
+                });
+            }
+            modal.insertCollection({
+                items: collection,
+                searchBar: true
+            });
+        });
+    }
+});
+
+
+
+// New user
+$(document).on('click', '#newUser', function () {
+     modalAddEditUser.open();
+     modalAddEditUser.setTitle('<b>Add new user</b>');
+     modalAddEditUser.setFooterButtons('<a href="#!" class="modal-close waves-effect btn-flat">Cancel</a><a href="#!" id="addUser" class="modal-action waves-effect btn-flat cyan modal-submit-form" style="color: #fff">Add user</a>');
+});
+
+
+
+// Edit user
+$(document).on('click', '.edit-user', function () {
+    let username = $(this).closest('.collection-item').attr('username');
+    modalAddEditUser.open();
+    modalAddEditUser.setTitle('<b>Edit user - ' + username.toUpperCase() + '</b>');
+    modalAddEditUser.hideFormField(['password', 'password_confirm']);
+    getUser(username, function (user) {
+        modalAddEditUser.setFormValues(user);
+        modalAddEditUser.setFooterButtons('<a href="#!" class="modal-close waves-effect btn-flat">Cancel</a><a href="#!" id="updateUser" uid="' + user._id + '" class="modal-action waves-effect btn-flat cyan modal-submit-form" style="color: #fff">Save user</a>');
+    });
+});
+
+
+
+// Delete user
+$(document).on('click', '.delete-user', function () {
+    let item = $(this).closest('.collection-item');
+    let username = item.attr('username');
+    let id = item.attr('uid');
+    mbox.confirm('Are you sure you want to remove the user "' + username + '" ?', function (confirmed) {
+        if (confirmed) {
+            deleteUser(id, function (err) {
+                if (err) return toast.notification.errorMessage('Error');
+                item.css({
+                    opacity: '.5',
+                    background: '#f2f2f2'
+                });
+                toast.notification.successMessage('User "' + username + '" was removed.');
+                modalUsers.onOpen(modalUsers);
+            });
+        }
+    });
+});
+```

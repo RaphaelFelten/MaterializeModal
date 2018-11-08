@@ -21,6 +21,7 @@ class Modal {
         this.template = '<div id="' + this.name + '" class="modal ' + this.type + '" style="' + this.topMarginCSS + '"><div class="modal-header"><h4><span style="font-size: 22px;">' + this.title + '</span></h4></div><div class="modal-content" style="padding-top: 17px; height: calc(100% - 112px);">' + this.fixedContent + '<div class="modal-content-dynamic"></div></div><div class="modal-footer">' + this.footerButtons + '</div>' + this.windowButtons + '</div>';
         document.body.insertAdjacentHTML('beforeend', this.template);
         this.domElement = document.getElementById(this.name);
+        this.domElement = document.getElementById(this.name);
         this.instance = M.Modal.init(this.domElement, {
             dismissible: false,
             startingTop: (this.topMargin - 5) + '%',
@@ -303,8 +304,8 @@ class Modal {
             return this.select('.modal-img').getAttribute('src');
         }
     }
-    addChipsField(chips) {
-        let chips = chips || [];
+    addChipsField(_chips) {
+        let chips = _chips || [];
         this.chipsField = createElementFromHTML('<div class="chips chips-placeholder" id="' + this.name + '_formChips' + '"></div>');
         this.addContent(this.chipsField);
         M.Chips.init(this.chipsField, {
@@ -664,7 +665,7 @@ function hideElement(elem) {
 
 
 // Toggle element visibility
-function toggleVisibility(elem, timing) {
+function toggleVisibility(elem) {
     // If the element is visible, hide it
     if (elem.classList.contains('is-visible')) {
         return hideElement(elem);
@@ -676,9 +677,9 @@ function toggleVisibility(elem, timing) {
 
 
 // Fade in effect
-function fadeIn(el, t) {
+function fadeIn(el, _t) {
     el.style.opacity = 0;
-    let t = t || 400;
+    let t = _t || 400;
     let last = +new Date();
     let tick = function () {
         el.style.opacity = +el.style.opacity + (new Date() - last) / t;
@@ -691,9 +692,9 @@ function fadeIn(el, t) {
 
 
 // Fade out effect
-function fadeOut(el, t) {
+function fadeOut(el, _t) {
     el.style.opacity = 1;
-    let t = t || 400;
+    let t = _t || 400;
     let last = +new Date();
     let tick = function () {
         el.style.opacity = +el.style.opacity - (new Date() - last) / t;

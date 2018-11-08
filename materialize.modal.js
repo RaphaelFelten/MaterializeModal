@@ -128,7 +128,6 @@ class Modal {
         if (opt.imageField) {
             this.addContent('<input class="modal-img-file" type="file">');
             this.addContent('<div class="modal-img-container valign-wrapper"><img class="modal-img" src=""><a href="#!" class="modal-change-img btn btn-large btn-floating amber darken-2"><i class="material-icons">image</i></a><a href="#!" class="modal-delete-img btn btn-large btn-floating red"><i class="material-icons">delete</i></a></div>');
-            var self = this;
             // Trigger click on file input when clicking the image button
             this.select('.modal-change-img').removeEventListener('click', null);
             this.select('.modal-change-img').addEventListener('click', (e) => this.select('.modal-img-file').click());
@@ -169,7 +168,7 @@ class Modal {
                         if (label == value) option.selected = true;
                     }
                 });
-            } else if (field.getAttribute('ftype') == 'yes_no') {
+            } else if (field.getAttribute('ftype') == 'checkbox') {
                 field.querySelector('#' + field.getAttribute('fid')).checked = obj[field.getAttribute('fname')] === true ? true : false;
             } else if (field.getAttribute('ftype') == 'text_long') {
                 field.querySelector('#' + field.getAttribute('fid')).value = obj[field.getAttribute('fname')];
@@ -179,9 +178,7 @@ class Modal {
             }
         });
         if (obj.type) {
-            if (formTypeLookup('prog', obj.type) == 'custom' || formTypeLookup('prog', obj.type) == 'custom_multiple') {
-                this.addChipsField(obj.chips);
-            }
+            if (obj.type == 'custom' || obj.type == 'custom_multiple') this.addChipsField(obj.chips);
         }
         M.FormSelect.init(document.querySelectorAll('select'));
         M.updateTextFields();
@@ -201,7 +198,7 @@ class Modal {
                 field.querySelector('input').style.borderBottom = '1px solid #9e9e9e';
             }
             if (mode == 'single') {
-                if (field.getAttribute('ftype') == 'yes_no') {
+                if (field.getAttribute('ftype') == 'checkbox') {
                     result.push({
                         field: field.getAttribute('fname'),
                         value: document.getElementById(field.getAttribute('fid')).checked
@@ -213,8 +210,12 @@ class Modal {
                     });
                 }
             } else if (mode == 'combined') {
-                if (field.getAttribute('ftype') == 'yes_no') {
+                if (field.getAttribute('ftype') == 'checkbox') {
                     result[field.getAttribute('fname')] = document.getElementById(field.getAttribute('fid')).checked;
+                } else if (field.getAttribute('ftype') == 'custom' || field.getAttribute('ftype') == 'custom_multiple') {
+                    let selected = Array.from(document.querySelectorAll('#' + field.getAttribute('fid') + ' option:checked')).map((el) => el.value);
+                    if (selected.length > 1) selected.splice(0, 1);
+                    result[field.getAttribute('fname')] = selected;
                 } else {
                     result[field.getAttribute('fname')] = document.getElementById(field.getAttribute('fid')).value;
                 }
@@ -249,7 +250,7 @@ class Modal {
         this.getFormFields().forEach(field => {
             if (field.getAttribute('ftype') == 'custom' || field.getAttribute('ftype') == 'custom_multiple') {
                 field.querySelectorAll('#' + field.getAttribute('fid') + ' option').forEach(option => option.selected = false);
-            } else if (field.getAttribute('ftype') == 'yes_no') {
+            } else if (field.getAttribute('ftype') == 'checkbox') {
                 field.querySelector('#' + field.getAttribute('fid')).checked = false;
             } else {
                 document.getElementById(field.getAttribute('fid')).value = '';
@@ -301,11 +302,8 @@ class Modal {
             return this.select('.modal-img').getAttribute('src');
         }
     }
-    hideDropzone() {
-        this.selectAll('.open-dropzone-modal-wrapper').forEach(el => el.parentNode.removeChild(el));
-    }
     addChipsField(chips) {
-        var chips = chips || [];
+        let chips = chips || [];
         this.chipsField = createElementFromHTML('<div class="chips chips-placeholder" id="' + this.name + '_formChips' + '"></div>');
         this.addContent(this.chipsField);
         M.Chips.init(this.chipsField, {
@@ -323,7 +321,7 @@ class Modal {
         });
     }
     insertCollection(opt) {
-        var width = opt.width || 100;
+        const width = opt.width || 100;
         let container = document.createElement('UL');
         container.classList.add('collection');
         container.style.width = width + '%';
@@ -337,7 +335,6 @@ class Modal {
                 itemDOM.classList.add('collection-item');
                 itemDOM.appendChild(createElementFromHTML('<div class="collection-item-content"><span class="title" style="' + style + '">' + item.label + '</span></div>'));
             }
-            if (opt.sortable) itemDOM.style.cursor = 'move';
             if (item.attributes) {
                 Object.keys(item.attributes).forEach(key => {
                     if (item.attributes.hasOwnProperty(key)) itemDOM.setAttribute(key, item.attributes[key])
@@ -345,8 +342,8 @@ class Modal {
             }
             if (item.secondaryContent) {
                 item.secondaryContent.reverse().forEach(secItem => {
-                    var secItemDOM = createElementFromHTML('<a href="#!" class="secondary-content"></a>');
-                    var iconDOM = createElementFromHTML('<i class="material-icons">' + secItem.icon + '</i>');
+                    let secItemDOM = createElementFromHTML('<a href="#!" class="secondary-content"></a>');
+                    let iconDOM = createElementFromHTML('<i class="material-icons">' + secItem.icon + '</i>');
                     if (secItem.class) secItemDOM.classList.add(secItem.class);
                     if (secItem.color) iconDOM.style.color = secItem.color;
                     secItemDOM.appendChild(iconDOM);
@@ -498,102 +495,58 @@ document.body.appendChild(createElementFromHTML('<div id="minimized-wrapper" sty
 
 // Constructing the HTML form element
 function modalFormField(opt) {
-    var id = opt.name.toLowerCase() + '_' + 'modalFormField' + '_' + opt.modal;
+    const id = opt.name.toLowerCase() + '_' + 'modalFormField' + '_' + opt.modal;
     opt.labelClear = opt.label.replace(/_/g, ' ');
-    var disabled = opt.disabled ? 'disabled' : '';
-    var width = opt.width || 100;
-    var value = opt.value || '';
-    var attributes = '';
+    const disabled = opt.disabled ? 'disabled' : '';
+    const width = opt.width || 100;
+    const value = opt.value || '';
+    let attributes = '';
     if (opt.attributes) {
         opt.attributes.forEach(function (attribute) {
             attributes += attribute.key + '="' + attribute.val + '" ';
         });
     }
-    var icon = opt.icon ? '<i class="material-icons prefix">' + opt.icon + '</i>' : '';
-    var dropzoneTemplate = opt.dropzone ? '<div class="open-dropzone-modal-wrapper"><a href="#!" class="btn btn-floating cyan open-dropzone-modal"><i class="material-icons">description</i></a><span class="count-documents">0</span></div>' : '';
+    const icon = opt.icon ? '<i class="material-icons prefix">' + opt.icon + '</i>' : '';
+    let contentToAppend = opt.append || '';
+    let options = '';
     switch (opt.type) {
         case 'text_short':
-            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><input ' + disabled + ' class="form-field" id="' + id + '" value="' + value + '" type="text">' + dropzoneTemplate + '</div>';
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><input ' + disabled + ' class="form-field" id="' + id + '" value="' + value + '" type="text">' + contentToAppend + '</div>';
             break;
         case 'password':
-            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><input ' + disabled + ' class="form-field" id="' + id + '" value="' + value + '" type="password">' + dropzoneTemplate + '</div>';
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><input ' + disabled + ' class="form-field" id="' + id + '" value="' + value + '" type="password">' + contentToAppend + '</div>';
             break;
         case 'text_long':
-            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><textarea ' + disabled + ' id="' + id + '" class="materialize-textarea form-field">' + value + '</textarea>' + dropzoneTemplate + '</div>';
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><textarea ' + disabled + ' id="' + id + '" class="materialize-textarea form-field">' + value + '</textarea>' + contentToAppend + '</div>';
             break;
-        case 'yes_no':
-            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%"><p>' + icon + '<label for="' + id + '"><input ' + disabled + ' id="' + id + '" value="' + value + '" type="checkbox" class="filled-in form-field" /><span>' + opt.labelClear + '</span></label></p>' + dropzoneTemplate + '</div>';
+        case 'checkbox':
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%"><p>' + icon + '<label for="' + id + '"><input ' + disabled + ' id="' + id + '" value="' + value + '" type="checkbox" class="filled-in form-field" /><span>' + opt.labelClear + '</span></label></p>' + contentToAppend + '</div>';
             break;
         case 'date':
-            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><input ' + disabled + ' id="' + id + '" value="' + value + '" class="form-field datepicker" type="text">' + dropzoneTemplate + '</div>';
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><input ' + disabled + ' id="' + id + '" value="' + value + '" class="form-field datepicker" type="text">' + contentToAppend + '</div>';
             break;
         case 'custom':
-            var options = "";
-            for (var i = 0; i < opt.chips.length; i++) {
+            for (let i = 0; i < opt.chips.length; i++) {
                 if (opt.chips[i].tag == value) {
                     options += '<option customattr="' + opt.chips[i].customattr + '" value="' + opt.chips[i].tag + '" selected>' + opt.chips[i].tag + '</option>';
                 } else {
                     options += '<option customattr="' + opt.chips[i].customattr + '" value="' + opt.chips[i].tag + '">' + opt.chips[i].tag + '</option>';
                 }
             }
-            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<select ' + disabled + ' class="form-field" id="' + id + '"><option value="" disabled selected>Auswählen..</option>' + options + '</select><label>' + opt.labelClear + '</label>' + dropzoneTemplate + '</div>';
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<select ' + disabled + ' class="form-field" id="' + id + '"><option value="" disabled selected>Auswählen..</option>' + options + '</select><label>' + opt.labelClear + '</label>' + contentToAppend + '</div>';
             break;
         case 'custom_multiple':
-            var options = "";
-            for (var i = 0; i < opt.chips.length; i++) {
+            for (let i = 0; i < opt.chips.length; i++) {
                 if (opt.chips[i].tag == value) {
                     options += '<option customattr="' + opt.chips[i].customattr + '" value="' + opt.chips[i].tag + '" selected>' + opt.chips[i].tag + '</option>';
                 } else {
                     options += '<option customattr="' + opt.chips[i].customattr + '" value="' + opt.chips[i].tag + '">' + opt.chips[i].tag + '</option>';
                 }
             }
-            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<select ' + disabled + ' multiple class="form-field" id="' + id + '"><option  value="" disabled selected>Auswählen..</option>' + options + '</select><label>' + opt.labelClear + '</label>' + dropzoneTemplate + '</div>';
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<select ' + disabled + ' multiple class="form-field" id="' + id + '"><option  value="" disabled selected>Auswählen..</option>' + options + '</select><label>' + opt.labelClear + '</label>' + contentToAppend + '</div>';
             break;
         default:
             return console.error('type "' + opt.type + '" is not defined in the modalFormField function');
-    }
-}
-
-
-
-// Lookup for form types
-function formTypeLookup(mode, val) {
-    if (mode == 'prog') {
-        if (val == "Kurzer Text") {
-            return "text_short";
-        } else if (val == "Passwort") {
-            return "password";
-        } else if (val == "Langer Text") {
-            return "text_long";
-        } else if (val == "Ja/Nein") {
-            return "yes_no";
-        } else if (val == "Datum") {
-            return "date";
-        } else if (val == "Benutzerdefiniertes Auswahlfeld") {
-            return "custom";
-        } else if (val == "Benutzerdefiniertes Auswahlfeld - Mehrere") {
-            return "custom_multiple";
-        } else {
-            return console.error('type "' + val + '" not found');
-        }
-    } else if (mode == 'label') {
-        if (val == "text_short") {
-            return "Kurzer Text";
-        } else if (val == "password") {
-            return "Passwort";
-        } else if (val == "text_long") {
-            return "Langer Text";
-        } else if (val == "yes_no") {
-            return "Ja/Nein";
-        } else if (val == "date") {
-            return "Datum";
-        } else if (val == "custom") {
-            return "Benutzerdefiniertes Auswahlfeld";
-        } else if (val == "custom_multiple") {
-            return "Benutzerdefiniertes Auswahlfeld - Mehrere";
-        } else {
-            return console.error('type "' + val + '" not found');
-        }
     }
 }
 
@@ -609,15 +562,16 @@ Number.prototype.toFixedDecimals = function (n) {
 
 // Sort an array of objects by an objects' property
 function dynamicSort(property, order) {
+    let sortOrder = 0;
     if (order == 'asc') {
-        var sortOrder = 1;
+        sortOrder = 1;
     } else if (order == 'desc') {
-        var sortOrder = -1;
+        sortOrder = -1;
     } else {
         return console.error('sort order ' + order + ' not defined in the dynamicSort function');
     }
     return function (a, b) {
-        var aTemp, bTemp;
+        let aTemp, bTemp;
         if (typeof a[property] === 'string') {
             aTemp = a[property].toLowerCase();
         } else {
@@ -628,7 +582,7 @@ function dynamicSort(property, order) {
         } else {
             bTemp = b[property];
         }
-        var result = (aTemp < bTemp) ? -1 : (aTemp > bTemp) ? 1 : 0;
+        let result = (aTemp < bTemp) ? -1 : (aTemp > bTemp) ? 1 : 0;
         return result * sortOrder;
     }
 }
@@ -637,7 +591,7 @@ function dynamicSort(property, order) {
 
 // create HTML DOM element from HTML string
 function createElementFromHTML(htmlString) {
-    var div = document.createElement('div');
+    let div = document.createElement('div');
     div.innerHTML = htmlString.trim();
     return div.firstChild;
 }
@@ -671,13 +625,13 @@ function searchInCollection(opt) {
 // Show an element
 function showElement(elem) {
     // Get the natural height of the element
-    var getHeight = function () {
+    const getHeight = function () {
         elem.style.display = 'block'; // Make it visible
-        var height = elem.scrollHeight + 'px'; // Get it's height
+        let height = elem.scrollHeight + 'px'; // Get it's height
         elem.style.display = ''; //  Hide it again
         return height;
     };
-    var height = getHeight(); // Get the natural height
+    const height = getHeight(); // Get the natural height
     elem.classList.add('is-visible'); // Make the element visible
     elem.style.height = height; // Update the max-height
     // Once the transition is complete, remove the inline max-height so the content can scale responsively

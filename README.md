@@ -74,12 +74,12 @@ Inserts a form:
     - text_long (textarea)
     - password (password input)
     - date (Datepicker.js library)
-    - yes_no (checkbox)
+    - checkbox (checkbox)
     - custom (select with single selection)
     - custom_multiple (select with multiple selections)
   - chips - required if using type custom or custom_multiple. It's an array of objects containing the options.
   For example: `[{tag: '1'}, {tag: '2'}, {tag: '3'}]`
-
+ - append - optional - HTML string that will be appended to the form field
  - icon - optional - string - icon from the material-icons package
  - attributes - optional - array of objects
  For example: `[{key: 'customAttribute1', val: 'yolo'}, {key: 'customAttribute2', val: 'swag'}]`
@@ -116,15 +116,12 @@ Shows the delete button of the image field.
 Removes the image.
 #### getImage()
 Returns a `FormData` object of the selected image.
-#### hideDropzone()
-Hides the Dropzone field.
 #### addChipsField(chips)
 Adds a chips field to the form - the argument is an array of chips equal to the structure of chips in a form field.
 #### insertCollection(options)
 Inserts a collection.
 ###### Options:
 - width - Integer - Width of the collection in % - default = 100
-- sortable - Boolean - Indicates if the collection items should be sortable - works with the library Sortable.js
 - searchBar - Boolean - Indicates if a search bar should be added
 - items - required - Array - Array of objects.
 Each item has a couple of properties:
@@ -146,93 +143,3 @@ Returns all HTML collection items.
 ## Helper
 ##### Submit form by pressing the Enter key
 Adding the class 'modal-submit-form' to an element triggers its click event when pressing the Enter key.
-
-## Complete example
-Here's a more complete example:
-
-```javascript
-// Modal creation
-var modalUsers = new Modal({
-    width: 50,
-    height: 80,
-    openButton: '.open-modalUsers',
-    title: '<b>User management</b>',
-    footerButtons: '<a href="#!" class="waves-effect btn btn-float grey darken-1 left print"><i class="material-icons">print</i></a><a href="#!" id="newUser" class="modal-action waves-effect btn-flat cyan"><i class="material-icons" style="color: #fff;">add</i></a>',
-    onOpen: function (modal) {
-        getUsers(function (users) {
-            var collection = [];
-            for (let user of users) {
-                collection.push({
-                    label: user.username.toUpperCase() + ' - ' + user.firstname + ' ' + user.lastname,
-                    attributes: {
-                        username: user.username,
-                        uid: user._id
-                    },
-                    secondaryContent: [{
-                        icon: 'edit',
-                        class: 'edit-user',
-                        color: '#00838f'
-                    }, {
-                        icon: 'lock',
-                        class: 'update-user-password',
-                        color: '#757575'
-                    }, {
-                        icon: 'delete',
-                        class: 'delete-user',
-                        color: '#e53935'
-                    }]
-                });
-            }
-            modal.insertCollection({
-                items: collection,
-                searchBar: true
-            });
-        });
-    }
-});
-
-
-
-// New user
-$(document).on('click', '#newUser', function () {
-     modalAddEditUser.open();
-     modalAddEditUser.setTitle('<b>Add new user</b>');
-     modalAddEditUser.setFooterButtons('<a href="#!" class="modal-close waves-effect btn-flat">Cancel</a><a href="#!" id="addUser" class="modal-action waves-effect btn-flat cyan modal-submit-form" style="color: #fff">Add user</a>');
-});
-
-
-
-// Edit user
-$(document).on('click', '.edit-user', function () {
-    let username = $(this).closest('.collection-item').attr('username');
-    modalAddEditUser.open();
-    modalAddEditUser.setTitle('<b>Edit user - ' + username.toUpperCase() + '</b>');
-    modalAddEditUser.hideFormField(['password', 'password_confirm']);
-    getUser(username, function (user) {
-        modalAddEditUser.setFormValues(user);
-        modalAddEditUser.setFooterButtons('<a href="#!" class="modal-close waves-effect btn-flat">Cancel</a><a href="#!" id="updateUser" uid="' + user._id + '" class="modal-action waves-effect btn-flat cyan modal-submit-form" style="color: #fff">Save user</a>');
-    });
-});
-
-
-
-// Delete user
-$(document).on('click', '.delete-user', function () {
-    let item = $(this).closest('.collection-item');
-    let username = item.attr('username');
-    let id = item.attr('uid');
-    mbox.confirm('Are you sure you want to remove the user "' + username + '" ?', function (confirmed) {
-        if (confirmed) {
-            deleteUser(id, function (err) {
-                if (err) return toast.notification.errorMessage('Error');
-                item.css({
-                    opacity: '.5',
-                    background: '#f2f2f2'
-                });
-                toast.notification.successMessage('User "' + username + '" was removed.');
-                modalUsers.onOpen(modalUsers);
-            });
-        }
-    });
-});
-```

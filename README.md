@@ -91,7 +91,7 @@ Sets the values for the form fields. The parameter must be an object. It should 
 `{formFieldName1: 'value1', formFieldName2: 'value2', formFieldName3: 'value3', formFieldName4: 'value4',})`
 In order for this to work, the property name must be equal to the name you gave the field in the 'insertForm' function.
 Setting the value for type 'custom' or 'custom_multiple' requires an array with the selected element(s), the structure must be similar to the 'chips' array when creating the form field.
-Setting the value for a 'yes_no' field requires a boolean value.
+Setting the value for a 'checkbox' field requires a boolean value.
 #### getFormValues(mode)
 Returns the form values. An optional argument can be passed in to specify how the data should be structured:
 `single` or `combined` - default is combined.

@@ -1,13 +1,13 @@
 # MaterializeModal
 Work more efficiently with modals from the MaterializeCSS framework.
 
-No JQuery required.
-
 I've been working on a single-page application for our company in which I heavily used modals for all the functionality. I quickly realized that adding all those modals to the HTML file was kind of a mess and doing anything dynamic was a pain in the ass (forms, collections, ..).
-That's why I've decided to develop this small library. I just wanted to share this in case someone might find it helpful. Feel free to suggest any improvements that could be made.
+That's why I've decided to write this small library. I just wanted to share this in case someone might find it helpful. Feel free to suggest any improvements that could be made.
 
 ## Installation
-Simply include `materialize.modal.min.js` & `materialize.modal.min.css` in your HTML file.
+If you'd like to use this library, you'll need the latest version of [MaterializeCSS](https://materializecss.com/).
+Then, simply include `materialize.modal.min.js` & `materialize.modal.min.css` in your HTML file. No initialization needed.
+Also, no need to include JQuery.
 
 ## Example:
 ```javascript

@@ -144,6 +144,17 @@ Returns the HTML collection.
 #### getCollectionItems()
 Returns all HTML collection items.
 
+## Global options
+#### M_Modal.datePickerOptions
+To customize the MaterializeCSS Datepicker, you can set options as described in their [documentation](https://materializecss.com/pickers.html).
+`M_Modal.datePickerOptions = {options}`
+#### M_Modal.timePickerOptions
+To customize the MaterializeCSS Timepicker, you can set options as described in their [documentation](https://materializecss.com/pickers.html).
+`M_Modal.timePickerOptions = {options}`
+#### M_Modal.searchBarPlaceholderText
+By default, the placeholder text of the searchbar in the header of the modal is `Search..`. This can be changed like this:
+`M_Modal.searchBarPlaceholderText = 'Search..'`
+
 ## Helper
 ##### Submit form by pressing the Enter key
 Adding the class 'modal-submit-form' to an element triggers its click event when pressing the Enter key.

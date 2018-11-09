@@ -191,13 +191,12 @@ class Modal {
         let requiredFieldMissing = false;
         let result = [];
         if (mode == 'combined') result = {};
-
         this.getFormFields().forEach(field => {
             if (field.getAttribute('required') && !document.getElementById(field.getAttribute('fid')).value) {
                 requiredFieldMissing = true;
-                field.querySelector('input').style.borderBottom = '1px solid #df0101';
+                field.style.backgroundColor = 'rgba(255,30,30,0.2)';
             } else {
-                field.querySelector('input').style.borderBottom = '1px solid #9e9e9e';
+                field.style.backgroundColor = 'transparent';
             }
             if (mode == 'single') {
                 if (field.getAttribute('ftype') == 'checkbox') {
@@ -362,7 +361,7 @@ class Modal {
         if (opt.searchBar) {
             let searchBar = document.createElement('DIV');
             searchBar.classList.add('modal-search-ctn');
-            searchBar.innerHTML = '<i class="material-icons icon">search</i><input type="text" /><i class="material-icons modal-search-clear">clear</i>';
+            searchBar.innerHTML = '<i class="material-icons icon">search</i><input type="text" placeholder="' + (M_Modal.searchBarPlaceholderText || 'Search..') + '" /><i class="material-icons modal-search-clear">clear</i>';
             if (!this.wasOpened) document.querySelector('#' + this.name + ' .modal-header').appendChild(searchBar);
             else document.querySelector('#' + this.name + ' .modal-search-ctn input').value = '';
             searchInCollection({

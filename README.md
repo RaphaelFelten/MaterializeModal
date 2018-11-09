@@ -11,8 +11,8 @@ Simply include `materialize.modal.min.js` & `materialize.modal.min.css` in your 
 
 ## Example:
 ```javascript
-let modal = new Modal({
-  title: 'My First Modal',
+let myFirstModal = new Modal({
+  title: 'My First Modal !',
   openButton: '#open_myFirstModal',
   width: 70,
   height: 80,

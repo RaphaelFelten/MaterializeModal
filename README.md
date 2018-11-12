@@ -1,13 +1,13 @@
 # MaterializeModal
 Work more efficiently with modals from the MaterializeCSS framework.
 
-No JQuery required.
-
 I've been working on a single-page application for our company in which I heavily used modals for all the functionality. I quickly realized that adding all those modals to the HTML file was kind of a mess and doing anything dynamic was a pain in the ass (forms, collections, ..).
-That's why I've decided to develop this small library. I just wanted to share this in case someone might find it helpful. Feel free to suggest any improvements that could be made.
+That's why I've decided to write this small library. I just wanted to share this in case someone might find it helpful. Feel free to suggest any improvements that could be made.
 
 ## Installation
-Simply include `materialize.modal.min.js` & `materialize.modal.min.css` in your HTML file.
+If you'd like to use this library, you'll need the latest version of [MaterializeCSS](https://materializecss.com/).
+Then, simply include `materialize.modal.min.js` & `materialize.modal.min.css` in your HTML file. No initialization needed.
+Also, no need to include JQuery.
 
 ## Example:
 ```javascript
@@ -83,12 +83,11 @@ Inserts a form:
     - custom_multiple (select with multiple selections)
   - chips - required if using type custom or custom_multiple. It's an array of objects containing the options.
   For example: `[{tag: '1'}, {tag: '2'}, {tag: '3'}]`
- - append - optional - HTML string that will be appended to the form field
- - icon - optional - string - icon from the material-icons package
- - attributes - optional - array of objects
- For example: `[{key: 'customAttribute1', val: 'yolo'}, {key: 'customAttribute2', val: 'swag'}]`
- Tip: if you want the form field to be required, add the the attribute `{key: 'required', val: 'true'}`
-
+  - required - optional - Boolean - Indicate if the field has to be filled in - default = false
+  - append - optional - HTML string that will be appended to the form field
+  - icon - optional - string - icon from the material-icons package
+  - attributes - optional - array of objects
+    For example: `[{key: 'customAttribute1', val: 'yolo'}, {key: 'customAttribute2', val: 'swag'}]`
 #### setFormValues(values)
 Sets the values for the form fields. The parameter must be an object. It should look something like this:
 `{formFieldName1: 'value1', formFieldName2: 'value2', formFieldName3: 'value3', formFieldName4: 'value4',})`
@@ -98,6 +97,7 @@ Setting the value for a 'checkbox' field requires a boolean value.
 #### getFormValues(mode)
 Returns the form values. An optional argument can be passed in to specify how the data should be structured:
 `single` or `combined` - default is combined.
+If there are required fields that are not filled in, this method returns this object: `{requiredFieldMissing: true}`
 #### getFormFields()
 Returns all HTML form fields.
 #### getFormField(field)
@@ -143,6 +143,17 @@ Each item has a couple of properties:
 Returns the HTML collection.
 #### getCollectionItems()
 Returns all HTML collection items.
+
+## Global options
+#### M_Modal.datePickerOptions
+To customize the MaterializeCSS Datepicker, you can set options as described in their [documentation](https://materializecss.com/pickers.html).
+`M_Modal.datePickerOptions = {options}`
+#### M_Modal.timePickerOptions
+To customize the MaterializeCSS Timepicker, you can set options as described in their [documentation](https://materializecss.com/pickers.html).
+`M_Modal.timePickerOptions = {options}`
+#### M_Modal.searchBarPlaceholderText
+By default, the placeholder text of the searchbar in the header of the modal is `Search..`. This can be changed like this:
+`M_Modal.searchBarPlaceholderText = 'Search..'`
 
 ## Helper
 ##### Submit form by pressing the Enter key

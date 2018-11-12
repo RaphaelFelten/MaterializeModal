@@ -21,7 +21,6 @@ class Modal {
         this.template = '<div id="' + this.name + '" class="modal ' + this.type + '" style="' + this.topMarginCSS + '"><div class="modal-header"><h4><span style="font-size: 22px;">' + this.title + '</span></h4></div><div class="modal-content" style="padding-top: 17px; height: calc(100% - 112px);">' + this.fixedContent + '<div class="modal-content-dynamic"></div></div><div class="modal-footer">' + this.footerButtons + '</div>' + this.windowButtons + '</div>';
         document.body.insertAdjacentHTML('beforeend', this.template);
         this.domElement = document.getElementById(this.name);
-        this.domElement = document.getElementById(this.name);
         this.instance = M.Modal.init(this.domElement, {
             dismissible: false,
             startingTop: (this.topMargin - 5) + '%',
@@ -142,12 +141,8 @@ class Modal {
             // Delete image
             this.select('.modal-delete-img').removeEventListener('click', null);
             this.select('.modal-delete-img').addEventListener('click', (e) => {
-                mbox.confirm('Dieses Bild wirklich löschen?', (answer) => {
-                    if (answer) {
-                        this.select('.modal-img').setAttribute('src', '');
-                        this.hideFormImageDeleteButton();
-                    }
-                });
+                this.select('.modal-img').setAttribute('src', '');
+                this.hideFormImageDeleteButton();
             });
         }
         if (opt.values) return this.setFormValues(opt.values);
@@ -192,7 +187,7 @@ class Modal {
         let result = [];
         if (mode == 'combined') result = {};
         this.getFormFields().forEach(field => {
-            if (field.getAttribute('required') && !document.getElementById(field.getAttribute('fid')).value) {
+            if (field.getAttribute('required') == 'true' && !document.getElementById(field.getAttribute('fid')).value) {
                 requiredFieldMissing = true;
                 field.style.backgroundColor = 'rgba(255,30,30,0.2)';
             } else {
@@ -499,6 +494,7 @@ function modalFormField(opt) {
     const id = opt.name.toLowerCase() + '_' + 'modalFormField' + '_' + opt.modal;
     opt.labelClear = opt.label.replace(/_/g, ' ');
     const disabled = opt.disabled ? 'disabled' : '';
+    const required = opt.required ? 'true' : 'false';
     const width = opt.width || 100;
     const value = opt.value || '';
     let attributes = '';
@@ -512,23 +508,22 @@ function modalFormField(opt) {
     let options = '';
     switch (opt.type) {
         case 'text_short':
-            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><input ' + disabled + ' class="form-field" id="' + id + '" value="' + value + '" type="text">' + contentToAppend + '</div>';
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" required="' + required + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><input ' + disabled + ' class="form-field" id="' + id + '" value="' + value + '" type="text">' + contentToAppend + '</div>';
             break;
         case 'password':
-            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><input ' + disabled + ' class="form-field" id="' + id + '" value="' + value + '" type="password">' + contentToAppend + '</div>';
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" required="' + required + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><input ' + disabled + ' class="form-field" id="' + id + '" value="' + value + '" type="password">' + contentToAppend + '</div>';
             break;
         case 'text_long':
-            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><textarea ' + disabled + ' id="' + id + '" class="materialize-textarea form-field">' + value + '</textarea>' + contentToAppend + '</div>';
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" required="' + required + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><textarea ' + disabled + ' id="' + id + '" class="materialize-textarea form-field">' + value + '</textarea>' + contentToAppend + '</div>';
             break;
         case 'checkbox':
-            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%"><p>' + icon + '<label for="' + id + '"><input ' + disabled + ' id="' + id + '" value="' + value + '" type="checkbox" class="filled-in form-field" /><span>' + opt.labelClear + '</span></label></p>' + contentToAppend + '</div>';
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" required="' + required + '" style="width:' + width + '%"><p>' + icon + '<label for="' + id + '"><input ' + disabled + ' id="' + id + '" value="' + value + '" type="checkbox" class="filled-in form-field" /><span>' + opt.labelClear + '</span></label></p>' + contentToAppend + '</div>';
             break;
         case 'date':
-            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><input ' + disabled + ' id="' + id + '" value="' + value + '" class="form-field datepicker" type="text">' + contentToAppend + '</div>';
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" required="' + required + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><input ' + disabled + ' id="' + id + '" value="' + value + '" class="form-field datepicker" type="text">' + contentToAppend + '</div>';
             break;
         case 'time':
-            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><input ' + disabled + ' id="' + id + '" value="' + value + '" class="form-field timepicker" type="text">' + contentToAppend + '</div>';
-            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><input ' + disabled + ' id="' + id + '" value="' + value + '" class="form-field timepicker" type="text">' + contentToAppend + '</div>';
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" required="' + required + '" style="width:' + width + '%">' + icon + '<label for="' + id + '">' + opt.labelClear + '</label><input ' + disabled + ' id="' + id + '" value="' + value + '" class="form-field timepicker" type="text">' + contentToAppend + '</div>';
             break;
         case 'custom':
             for (let i = 0; i < opt.chips.length; i++) {
@@ -538,7 +533,7 @@ function modalFormField(opt) {
                     options += '<option customattr="' + opt.chips[i].customattr + '" value="' + opt.chips[i].tag + '">' + opt.chips[i].tag + '</option>';
                 }
             }
-            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<select ' + disabled + ' class="form-field" id="' + id + '"><option value="" disabled selected>Auswählen..</option>' + options + '</select><label>' + opt.labelClear + '</label>' + contentToAppend + '</div>';
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" required="' + required + '" style="width:' + width + '%">' + icon + '<select ' + disabled + ' class="form-field" id="' + id + '"><option value="" disabled selected>Auswählen..</option>' + options + '</select><label>' + opt.labelClear + '</label>' + contentToAppend + '</div>';
             break;
         case 'custom_multiple':
             for (let i = 0; i < opt.chips.length; i++) {
@@ -548,7 +543,7 @@ function modalFormField(opt) {
                     options += '<option customattr="' + opt.chips[i].customattr + '" value="' + opt.chips[i].tag + '">' + opt.chips[i].tag + '</option>';
                 }
             }
-            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" style="width:' + width + '%">' + icon + '<select ' + disabled + ' multiple class="form-field" id="' + id + '"><option  value="" disabled selected>Auswählen..</option>' + options + '</select><label>' + opt.labelClear + '</label>' + contentToAppend + '</div>';
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" required="' + required + '" style="width:' + width + '%">' + icon + '<select ' + disabled + ' multiple class="form-field" id="' + id + '"><option  value="" disabled selected>Auswählen..</option>' + options + '</select><label>' + opt.labelClear + '</label>' + contentToAppend + '</div>';
             break;
         default:
             return console.error('type "' + opt.type + '" is not defined in the modalFormField function');

@@ -83,11 +83,11 @@ Inserts a form:
     - custom_multiple (select with multiple selections)
   - chips - required if using type custom or custom_multiple. It's an array of objects containing the options.
   For example: `[{tag: '1'}, {tag: '2'}, {tag: '3'}]`
- - required - optional - Boolean - Indicate if the field has to be filled in - default = false
- - append - optional - HTML string that will be appended to the form field
- - icon - optional - string - icon from the material-icons package
- - attributes - optional - array of objects
- For example: `[{key: 'customAttribute1', val: 'yolo'}, {key: 'customAttribute2', val: 'swag'}]`
+  - required - optional - Boolean - Indicate if the field has to be filled in - default = false
+  - append - optional - HTML string that will be appended to the form field
+  - icon - optional - string - icon from the material-icons package
+  - attributes - optional - array of objects
+    For example: `[{key: 'customAttribute1', val: 'yolo'}, {key: 'customAttribute2', val: 'swag'}]`
 #### setFormValues(values)
 Sets the values for the form fields. The parameter must be an object. It should look something like this:
 `{formFieldName1: 'value1', formFieldName2: 'value2', formFieldName3: 'value3', formFieldName4: 'value4',})`

@@ -83,12 +83,11 @@ Inserts a form:
     - custom_multiple (select with multiple selections)
   - chips - required if using type custom or custom_multiple. It's an array of objects containing the options.
   For example: `[{tag: '1'}, {tag: '2'}, {tag: '3'}]`
+ - required - optional - Boolean - Indicate if the field has to be filled in - default = false
  - append - optional - HTML string that will be appended to the form field
  - icon - optional - string - icon from the material-icons package
  - attributes - optional - array of objects
  For example: `[{key: 'customAttribute1', val: 'yolo'}, {key: 'customAttribute2', val: 'swag'}]`
- Tip: if you want the form field to be required, add the the attribute `{key: 'required', val: 'true'}`
-
 #### setFormValues(values)
 Sets the values for the form fields. The parameter must be an object. It should look something like this:
 `{formFieldName1: 'value1', formFieldName2: 'value2', formFieldName3: 'value3', formFieldName4: 'value4',})`
@@ -98,6 +97,7 @@ Setting the value for a 'checkbox' field requires a boolean value.
 #### getFormValues(mode)
 Returns the form values. An optional argument can be passed in to specify how the data should be structured:
 `single` or `combined` - default is combined.
+If there are required fields that are not filled in, this method returns this object: `{requiredFieldMissing: true}`
 #### getFormFields()
 Returns all HTML form fields.
 #### getFormField(field)

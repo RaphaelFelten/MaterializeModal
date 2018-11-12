@@ -21,7 +21,6 @@ class Modal {
         this.template = '<div id="' + this.name + '" class="modal ' + this.type + '" style="' + this.topMarginCSS + '"><div class="modal-header"><h4><span style="font-size: 22px;">' + this.title + '</span></h4></div><div class="modal-content" style="padding-top: 17px; height: calc(100% - 112px);">' + this.fixedContent + '<div class="modal-content-dynamic"></div></div><div class="modal-footer">' + this.footerButtons + '</div>' + this.windowButtons + '</div>';
         document.body.insertAdjacentHTML('beforeend', this.template);
         this.domElement = document.getElementById(this.name);
-        this.domElement = document.getElementById(this.name);
         this.instance = M.Modal.init(this.domElement, {
             dismissible: false,
             startingTop: (this.topMargin - 5) + '%',

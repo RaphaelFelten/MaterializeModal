@@ -182,7 +182,7 @@ Inserts a collection.
 | Name | Type | Default value | Description |
 |-|-|-|-|
 | width | Number | 100 | Width of the collection in %. |
-| searchBar | Boolean | false | Add a searchbar to the modal header to search through the collection. |
+| searchBar | Boolean | false | Add a searchbar to the modal header to search through the collection. The search will be performed on the items' `label` text. |
 | onInserted | Function | null | Optional callback that fires when the collection has been fully inserted. |
 | items | Array | null | Required. Array of objects containing all collection items. Each item can be customized. See below for details. |
 ##### Collection item options

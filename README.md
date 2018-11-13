@@ -16,6 +16,11 @@ let myFirstModal = new Modal({
   openButton: '#open_myFirstModal',
   width: 70,
   height: 80,
+  opacity: 0.7,
+  dismissible: true,
+  preventScrolling: false,
+  inDuration: 150,
+  outDuration: 75,
   onOpen: (modal) => {
     modal.setContent('Some content');
   }
@@ -32,9 +37,13 @@ let myFirstModal = new Modal({
 | openButton | String | null | HTML query string of the element that opens the modal |
 | windowButtons | Boolean | true | Buttons on the top right of the modal (minimize, maximize, close) |
 | fixedContent | String | null | Static content - Can contain HTML |
+| opacity | Number | 0.5 | Opacity of the modal overlay |
+| dismissible | Boolean | false | Allow modal to be dismissed by keyboard or overlay click |
+| preventScrolling | Boolean | true | Prevent page from scrolling while modal is open |
+| inDuration | Number | 250 | Transition in duration in milliseconds |
+| outDuration | Number | 250 | Transition out duration in milliseconds |
 | onOpen | Function | null | Executed each time the modal is opened. Gets two parameters: modal, data - the second argument can contain any kind of custom data which can be passed in through the open() method |
 | onClose | Function | null | Executed each time the modal is closed. Gets the modal object as its argument |
-
 
 
 ## Methods:

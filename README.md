@@ -64,7 +64,7 @@ Sets a custom HTML attribute.
 #### getAttribute(attribute)
 Returns the value of the specified attribute.
 #### insertForm(options)
-Inserts a form:
+Inserts a form.
 ###### Options
 | Name | Type | Default value | Description |
 | :------------ | :------------ | :------------ | :------------ |

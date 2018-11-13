@@ -11,6 +11,11 @@ class Modal {
         this.topMarginCSS = 'top:' + this.topMargin + 'vh;';
         this.footerButtons = opt.footerButtons || '';
         this.openButton = opt.openButton || null;
+        this.opacity = opt.opacity || 0.5;
+        this.dismissible = opt.dismissible || false;
+        this.preventScrolling = opt.preventScrolling || true;
+        this.inDuration = opt.inDuration || 250;
+        this.outDuration = opt.outDuration || 250;
         this.windowButtons = opt.windowButtons === false ? '' : '<div class="modal-windowButtons"><div class="minimize-button-modal modal-windowbutton modal-minimize"><i class="material-icons">minimize</i></div><div class="maximize-button-modal modal-windowbutton modal-maximize"><i class="material-icons">filter_none</i></div><div class="close-button-modal modal-windowbutton modal-close"><i class="material-icons">close</i></div></div>';
         this.type = opt.type == 'default' ? '' : 'modal-fixed-footer';
         this.onOpen = opt.onOpen || null;
@@ -22,10 +27,13 @@ class Modal {
         document.body.insertAdjacentHTML('beforeend', this.template);
         this.domElement = document.getElementById(this.name);
         this.instance = M.Modal.init(this.domElement, {
-            dismissible: false,
+            opacity: this.opacity,
+            dismissible: this.dismissible,
+            preventScrolling: this.preventScrolling,
             startingTop: (this.topMargin - 5) + '%',
             endingTop: this.topMargin + '%',
-            outDuration: 50,
+            inDuration: this.inDuration,
+            outDuration: this.outDuration,
             onCloseStart: () => {
                 document.querySelectorAll('.minimized-item').forEach(elt => {
                     if (elt.getAttribute('mid') == this.name) {

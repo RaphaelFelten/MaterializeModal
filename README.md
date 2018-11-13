@@ -56,9 +56,9 @@ Closes the modal. An optional callback function can be passed in that executes w
 #### on(event, callback)
 Binds an event (click, keypress, ...) to the modal. The callback gets the `event` data as its parameter.
 #### setContent(content)
-Removes all  dynamic content from the modal (the fixedContent from the options will not be affected) and sets the content passed in. The content must be a string.
+Removes all  dynamic content from the modal (the fixedContent from the options will not be affected) and sets the content passed in. The content must be a string or a DOM Element.
 #### addContent(content)
-Adds content to the end of the modal. Content must be a string and may contain HTML.
+Adds content to the end of the modal. Content must be a string or a DOM Element.
 #### removeContent(selector)
 Removes content based on a HTML query selection. For example:
 `modal.removeContent('.myNiceDiv')`

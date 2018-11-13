@@ -83,9 +83,59 @@ Inserts a form.
 | append | String | null | HTML string to be appended to the form field |
 | icon | String | null | Icon prefix to be used for the form field. Should be an icon string from the Material Icons package. |
 | attributes | Array | null | Specify an array of custom attributes for the form field. For example: `[{key: 'customAttribute1', val: 'yolo'}, {key: 'customAttribute2', val: 'swag'}]` |
+##### Example:
+```javascript
+modal.insertForm({
+  width: 80,
+  fields: [{
+    name: 'firstname',
+    label: 'First name',
+    type: 'text_short',
+    icon: 'account_circle',
+    width: 50,
+    required: true
+    }, {
+    name: 'lastname',
+    label: 'Last name',
+    type: 'text_short',
+    icon: 'account_circle',
+    width: 50,
+    required: true
+    }, {
+    name: 'position',
+    label: 'Position',
+    type: 'custom',
+    icon: 'label',
+    required: true,
+    chips: [{
+      tag: 'Accounting'
+      }, {
+      tag: 'Sales'
+      }, {
+      tag: 'Human Resources'
+      }]
+    }, {
+    name: 'date_started',
+    label: 'Start date',
+    type: 'date',
+    icon: 'date_range',
+    required: true
+    }]
+});
+```
+
 #### setFormValues(values)
-Sets the values for the form fields. The parameter must be an object. It should look something like this:
-`{formFieldName1: 'value1', formFieldName2: 'value2', formFieldName3: 'value3', formFieldName4: 'value4',})`
+Sets the values for the form fields. The parameter must be an object.
+Considering our previous example, it should look something like this:
+```javascript
+modal.setFormValues({
+  firstname: 'Alex',
+  lastname: 'Smith',
+  position: [{tag: 'Sales'}],
+  date_started: '2018-10-10' // depends on your Datepicker setup
+});
+```
+
 In order for this to work, the property name must be equal to the name you gave the field in the 'insertForm' function.
 Setting the value for type 'custom' or 'custom_multiple' requires an array with the selected element(s), the structure must be similar to the 'chips' array when creating the form field.
 Setting the value for a 'checkbox' field requires a boolean value.
@@ -139,6 +189,39 @@ Inserts a collection.
 | class | String | null | An optional class can be added to the item. |
 | color | String | null | The color of the item can be changed by specifying a CSS color string. |
 | tooltip | String | null | Specify tooltip text. |
+##### Example:
+Let's consider the example from the `insertForm()` method. We've added the data to some database and now we would like to display the members of the staff:
+```javascript
+// We've got the staff data from an API
+let collection = [];
+staff.forEach(empl => {
+  collection.push({
+    label: `${empl.firstname} ${empl.lastname}`,
+    attributes: {employee-id: empl._id},
+    secondaryContent: [
+      {
+      icon: 'edit',
+      class: 'edit-employee',
+      color: '#00bcd4'
+      },
+      {
+      icon: 'delete',
+      class: 'delete-employee',
+      color: '#df0101'
+      }
+    ]
+  });
+});
+modal.insertCollection({
+  width: 90,
+  searchBar: true,
+  items: collection,
+  onInserted: () => {
+    // do something when the collection has been fully inserted
+  }
+});
+```
+
 #### getCollection()
 Returns the HTML collection.
 #### getCollectionItems()

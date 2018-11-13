@@ -66,28 +66,23 @@ Returns the value of the specified attribute.
 #### insertForm(options)
 Inserts a form:
 ###### Options
-- width - Integer - width of the form in % - default = 100)
-- imageField - Boolean - Specify if an image field should be added to the form - default = false)
-- fields - An array of objects containing the form fields. Each field can be customized:
-  - name - required - String - must be unique!
-  - label - required - String
-  - width - optional - integer - width in % - When using this on 2 or more consecutive fields and their combined values is 100 or less, the fields will be on one line.
-  - type - required - String - Available types:
-    - text_short (standard input)
-    - text_long (textarea)
-    - password (password input)
-    - date (Datepicker) => Default options can be set by doing M_Modal.datePickerOptions = {options}
-    - time (Timepicker) => Default options can be set by doing M_Modal.timePickerOptions = {options}
-    - checkbox (checkbox)
-    - custom (select with single selection)
-    - custom_multiple (select with multiple selections)
-  - chips - required if using type custom or custom_multiple. It's an array of objects containing the options.
-  For example: `[{tag: '1'}, {tag: '2'}, {tag: '3'}]`
-  - required - optional - Boolean - Indicate if the field has to be filled in - default = false
-  - append - optional - HTML string that will be appended to the form field
-  - icon - optional - string - icon from the material-icons package
-  - attributes - optional - array of objects
-    For example: `[{key: 'customAttribute1', val: 'yolo'}, {key: 'customAttribute2', val: 'swag'}]`
+| Name | Type | Default value | Description |
+| :------------ | :------------ | :------------ | :------------ |
+| width | Number | 100 | Width of the form in % |
+| imageField | Boolean | false | Specify if an image field should be added to the form |
+| fields | Array | null | Contains all form fields. Each field can be customized. See below for details. |
+##### Form field options:
+| Name | Type | Default value | Description |
+| :------------ | :------------ | :------------ | :------------ |
+| name | String | null | Required. Specifies the name of the field. Must be unique! |
+| label | String | null | Required. Label of the form field. |
+| width | Number| 100 | Optional. Width of the field in %. When setting this on 2 or more consecutive form fields and their combined value is 100 or less, these fields will be on one line. |
+| type | string | null | Required. Specifies the field type. Available types are: `text_short`,`text_long`,`password`,`date`,`time`,`checkbox`,`custom`,`custom_multiple`|
+| chips  | Array | null | Required when using form field type `custom` or `custom_multiple`. Structure example -> `[{tag: '1'}, {tag: '2'}, {tag: '3'}]` |
+| required | Boolean | false | Indicate if the field has to be filled in. |
+| append | String | null | HTML string to be appended to the form field |
+| icon | String | null | Icon prefix to be used for the form field. Should be an icon string from the Material Icons package. |
+| attributes | Array | null | Specify an array of custom attributes for the form field. For example: `[{key: 'customAttribute1', val: 'yolo'}, {key: 'customAttribute2', val: 'swag'}]` |
 #### setFormValues(values)
 Sets the values for the form fields. The parameter must be an object. It should look something like this:
 `{formFieldName1: 'value1', formFieldName2: 'value2', formFieldName3: 'value3', formFieldName4: 'value4',})`

@@ -143,6 +143,10 @@ Each item has a couple of properties:
 Returns the HTML collection.
 #### getCollectionItems()
 Returns all HTML collection items.
+#### minimize()
+Minimize the modal programatically.
+#### maximize()
+Maximize the modal programatically.
 
 ## Global options
 #### M_Modal.datePickerOptions

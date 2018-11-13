@@ -153,25 +153,27 @@ class Modal {
     }
     setFormValues(obj) {
         this.getFormFields().forEach(field => {
-            if (field.getAttribute('ftype') == 'custom' || field.getAttribute('ftype') == 'custom_multiple') {
-                field.querySelectorAll('#' + field.getAttribute('fid') + ' option').forEach(option => {
-                    let label = option.textContent;
-                    let value = obj[field.getAttribute('fname')];
-                    if (value && typeof value == 'object') {
-                        value.forEach(chip => {
-                            if (label == chip) option.selected = true;
-                        });
-                    } else if (value && typeof value == 'string') {
-                        if (label == value) option.selected = true;
-                    }
-                });
-            } else if (field.getAttribute('ftype') == 'checkbox') {
-                field.querySelector('#' + field.getAttribute('fid')).checked = obj[field.getAttribute('fname')] === true ? true : false;
-            } else if (field.getAttribute('ftype') == 'text_long') {
-                field.querySelector('#' + field.getAttribute('fid')).value = obj[field.getAttribute('fname')];
-                M.textareaAutoResize(field.querySelector('#' + field.getAttribute('fid')));
-            } else {
-                field.querySelector('#' + field.getAttribute('fid')).value = obj[field.getAttribute('fname')];
+            if (obj[field.getAttribute('fname')]) {
+                if (field.getAttribute('ftype') == 'custom' || field.getAttribute('ftype') == 'custom_multiple') {
+                    field.querySelectorAll('#' + field.getAttribute('fid') + ' option').forEach(option => {
+                        let label = option.textContent;
+                        let value = obj[field.getAttribute('fname')];
+                        if (value && typeof value == 'object') {
+                            value.forEach(chip => {
+                                if (label == chip) option.selected = true;
+                            });
+                        } else if (value && typeof value == 'string') {
+                            if (label == value) option.selected = true;
+                        }
+                    });
+                } else if (field.getAttribute('ftype') == 'checkbox') {
+                    field.querySelector('#' + field.getAttribute('fid')).checked = obj[field.getAttribute('fname')] === true ? true : false;
+                } else if (field.getAttribute('ftype') == 'text_long') {
+                    field.querySelector('#' + field.getAttribute('fid')).value = obj[field.getAttribute('fname')];
+                    M.textareaAutoResize(field.querySelector('#' + field.getAttribute('fid')));
+                } else {
+                    field.querySelector('#' + field.getAttribute('fid')).value = obj[field.getAttribute('fname')];
+                }
             }
         });
         if (obj.type) {
@@ -189,9 +191,9 @@ class Modal {
         this.getFormFields().forEach(field => {
             if (field.getAttribute('required') == 'true' && !document.getElementById(field.getAttribute('fid')).value) {
                 requiredFieldMissing = true;
-                field.style.backgroundColor = 'rgba(255,30,30,0.2)';
+                (field.querySelector('input') || field.querySelector('textarea')).style.borderBottomColor = '#df0101';
             } else {
-                field.style.backgroundColor = 'transparent';
+                (field.querySelector('input') || field.querySelector('textarea')).style.borderBottomColor = '#9e9e9e';
             }
             if (mode == 'single') {
                 if (field.getAttribute('ftype') == 'checkbox') {
@@ -217,7 +219,6 @@ class Modal {
                 }
             }
         });
-
         if (this.chipsField) {
             if (mode == 'combined') {
                 result.chips = this.chipsField[0].M_Chips.chipsData;
@@ -354,16 +355,19 @@ class Modal {
         });
         this.setContent(container);
         if (opt.searchBar) {
-            let searchBar = document.createElement('DIV');
-            searchBar.classList.add('modal-search-ctn');
-            searchBar.innerHTML = '<i class="material-icons icon">search</i><input type="text" placeholder="' + (M_Modal.searchBarPlaceholderText || 'Search..') + '" /><i class="material-icons modal-search-clear">clear</i>';
-            if (!this.wasOpened) document.querySelector('#' + this.name + ' .modal-header').appendChild(searchBar);
-            else document.querySelector('#' + this.name + ' .modal-search-ctn input').value = '';
+            if (!this.wasOpened) {
+                let searchBar = document.createElement('DIV');
+                searchBar.classList.add('modal-search-ctn');
+                searchBar.innerHTML = '<i class="material-icons icon">search</i><input type="text" placeholder="' + (M_Modal.searchBarPlaceholderText || 'Search..') + '" /><i class="material-icons modal-search-clear">clear</i>';
+                this.select('.modal-header').appendChild(searchBar);
+            } else {
+                this.select('.modal-search-ctn input').value = '';
+            }
             searchInCollection({
-                input: searchBar.getElementsByTagName('input')[0],
+                input: this.select('.modal-search-ctn input'),
                 elements: this.selectAll('.collection .collection-item'),
                 text: '.title',
-                clearBtn: searchBar.querySelector('.modal-search-clear')
+                clearBtn: this.select('.modal-search-ctn .modal-search-clear')
             });
         }
         this.wasOpened = true;
@@ -407,59 +411,15 @@ class Modal {
 
         // Restore minimized modal
         template.querySelector('.title').addEventListener('click', (e) => {
-            let height = this.domElement.classList.contains('maximized') ? '100' : this.height;
-            let topMargin = this.domElement.classList.contains('maximized') ? '0' : this.topMargin;
-            let width = this.domElement.classList.contains('maximized') ? '100' : this.width;
-            let left = (100 - this.width) / 2;
-            this.domElement.style.height = height + 'vh';
-            this.domElement.style.width = width + '%';
-            this.domElement.style.top = topMargin + 'vh';
-            this.domElement.style.display = 'block';
-            this.domElement.style.opacity = 1;
-            this.domElement.nextElementSibling.style.display = 'block';
-            this.domElement.classList.remove('minimized');
-            this.domElement.style.overflowY = 'hidden';
-            e.target.closest('.minimized-item').parentNode.removeChild(e.target.closest('.minimized-item'));
-            const itemCount = document.querySelectorAll('.minimized-item').length;
-            if (itemCount > 5) {
-                document.querySelectorAll('.minimized-item').forEach(item => item.style.width = (100 / itemCount).toFixedDecimals(2) + '%');
-            } else if (itemCount <= 5 && itemCount > 0) {
-                document.querySelectorAll('.minimized-item').forEach(item => item.style.width = '20%');
-            } else {
-                document.getElementById('minimized-wrapper').style.display = 'none';
-            }
+            this.restoreMinimized(e);
         });
-
         // Maximize minimized modal
         template.querySelector('.modal-minimized-maximize').addEventListener('click', (e) => {
-            this.domElement.style.display = 'block';
-            this.domElement.style.opacity = 1;
-            this.domElement.style.overflowY = 'hidden';
-            this.maximize('restore');
-            this.domElement.classList.remove('minimized');
-            this.domElement.nextElementSibling.style.display = 'block';
-            e.target.closest('.minimized-item').parentNode.removeChild(e.target.closest('.minimized-item'));
-            const itemCount = document.querySelectorAll('.minimized-item').length;
-            if (itemCount > 5) {
-                document.querySelectorAll('.minimized-item').forEach(item => item.style.width = (100 / itemCount).toFixedDecimals(2) + '%');
-            } else if (itemCount <= 5 && itemCount > 0) {
-                document.querySelectorAll('.minimized-item').forEach(item => item.style.width = '20%');
-            } else {
-                document.getElementById('minimized-wrapper').style.display = 'none';
-            }
+            this.maximizeMinimized(e);
         });
-
         // Close minimized modal
         template.querySelector('.modal-minimized-close').addEventListener('click', (e) => {
-            this.close();
-            const itemCount = document.querySelectorAll('.minimized-item').length;
-            if (itemCount > 5) {
-                document.querySelectorAll('.minimized-item').forEach(item => item.style.width = (100 / itemCount).toFixedDecimals(2) + '%');
-            } else if (itemCount <= 5 && itemCount > 0) {
-                document.querySelectorAll('.minimized-item').forEach(item => item.style.width = '20%');
-            } else {
-                document.getElementById('minimized-wrapper').style.display = 'none';
-            }
+            this.closeMinimized();
         });
     }
     maximize(mode) {
@@ -478,6 +438,57 @@ class Modal {
             this.domElement.style.maxWidth = '100%';
             this.domElement.style.top = 0;
             this.domElement.classList.add('maximized');
+        }
+    }
+    restoreMinimized(e) {
+        let height = this.domElement.classList.contains('maximized') ? '100' : this.height;
+        let topMargin = this.domElement.classList.contains('maximized') ? '0' : this.topMargin;
+        let width = this.domElement.classList.contains('maximized') ? '100' : this.width;
+        let left = (100 - this.width) / 2;
+        this.domElement.style.height = height + 'vh';
+        this.domElement.style.width = width + '%';
+        this.domElement.style.top = topMargin + 'vh';
+        this.domElement.style.display = 'block';
+        this.domElement.style.opacity = 1;
+        this.domElement.nextElementSibling.style.display = 'block';
+        this.domElement.classList.remove('minimized');
+        this.domElement.style.overflowY = 'hidden';
+        e.target.closest('.minimized-item').parentNode.removeChild(e.target.closest('.minimized-item'));
+        const itemCount = document.querySelectorAll('.minimized-item').length;
+        if (itemCount > 5) {
+            document.querySelectorAll('.minimized-item').forEach(item => item.style.width = (100 / itemCount).toFixedDecimals(2) + '%');
+        } else if (itemCount <= 5 && itemCount > 0) {
+            document.querySelectorAll('.minimized-item').forEach(item => item.style.width = '20%');
+        } else {
+            document.getElementById('minimized-wrapper').style.display = 'none';
+        }
+    }
+    maximizeMinimized(e) {
+        this.domElement.style.display = 'block';
+        this.domElement.style.opacity = 1;
+        this.domElement.style.overflowY = 'hidden';
+        this.maximize('restore');
+        this.domElement.classList.remove('minimized');
+        this.domElement.nextElementSibling.style.display = 'block';
+        e.target.closest('.minimized-item').parentNode.removeChild(e.target.closest('.minimized-item'));
+        const itemCount = document.querySelectorAll('.minimized-item').length;
+        if (itemCount > 5) {
+            document.querySelectorAll('.minimized-item').forEach(item => item.style.width = (100 / itemCount).toFixedDecimals(2) + '%');
+        } else if (itemCount <= 5 && itemCount > 0) {
+            document.querySelectorAll('.minimized-item').forEach(item => item.style.width = '20%');
+        } else {
+            document.getElementById('minimized-wrapper').style.display = 'none';
+        }
+    }
+    closeMinimized() {
+        this.close();
+        const itemCount = document.querySelectorAll('.minimized-item').length;
+        if (itemCount > 5) {
+            document.querySelectorAll('.minimized-item').forEach(item => item.style.width = (100 / itemCount).toFixedDecimals(2) + '%');
+        } else if (itemCount <= 5 && itemCount > 0) {
+            document.querySelectorAll('.minimized-item').forEach(item => item.style.width = '20%');
+        } else {
+            document.getElementById('minimized-wrapper').style.display = 'none';
         }
     }
 }
@@ -533,7 +544,7 @@ function modalFormField(opt) {
                     options += '<option customattr="' + opt.chips[i].customattr + '" value="' + opt.chips[i].tag + '">' + opt.chips[i].tag + '</option>';
                 }
             }
-            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" required="' + required + '" style="width:' + width + '%">' + icon + '<select ' + disabled + ' class="form-field" id="' + id + '"><option value="" disabled selected>Auswählen..</option>' + options + '</select><label>' + opt.labelClear + '</label>' + contentToAppend + '</div>';
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" required="' + required + '" style="width:' + width + '%">' + icon + '<select ' + disabled + ' class="form-field" id="' + id + '"><option value="" disabled selected>...</option>' + options + '</select><label>' + opt.labelClear + '</label>' + contentToAppend + '</div>';
             break;
         case 'custom_multiple':
             for (let i = 0; i < opt.chips.length; i++) {
@@ -543,7 +554,7 @@ function modalFormField(opt) {
                     options += '<option customattr="' + opt.chips[i].customattr + '" value="' + opt.chips[i].tag + '">' + opt.chips[i].tag + '</option>';
                 }
             }
-            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" required="' + required + '" style="width:' + width + '%">' + icon + '<select ' + disabled + ' multiple class="form-field" id="' + id + '"><option  value="" disabled selected>Auswählen..</option>' + options + '</select><label>' + opt.labelClear + '</label>' + contentToAppend + '</div>';
+            return '<div class="input-field" ' + attributes + ' fid="' + id + '" fname="' + opt.name + '" flabel="' + opt.label + '" ftype="' + opt.type + '" required="' + required + '" style="width:' + width + '%">' + icon + '<select ' + disabled + ' multiple class="form-field" id="' + id + '"><option  value="" disabled selected>...</option>' + options + '</select><label>' + opt.labelClear + '</label>' + contentToAppend + '</div>';
             break;
         default:
             return console.error('type "' + opt.type + '" is not defined in the modalFormField function');
@@ -605,7 +616,7 @@ function searchInCollection(opt) {
         let filter = opt.input.value.toUpperCase(); // convert input value to uppercase
         opt.elements.forEach(el => { // loop through the elements
             if (el.querySelector(opt.text).textContent.toUpperCase().indexOf(filter) > -1) { // convert the textcontent of the element to uppercase and check if the input value matches something in that string
-                el.style.display = ''; // if it matches, display that element
+                el.style.display = 'block'; // if it matches, display that element
             } else {
                 el.style.display = 'none'; // otherwise hide it
             }

@@ -120,20 +120,25 @@ Adds a chips field to the form - the argument is an array of chips equal to the 
 #### insertCollection(options)
 Inserts a collection.
 ###### Options:
-- width - Integer - Width of the collection in % - default = 100
-- searchBar - Boolean - Indicates if a search bar should be added
-- items - required - Array - Array of objects.
-Each item has a couple of properties:
-  - label - required - String - The label of the item
-  - attributes - optional - Object - Custom HTML attributes.
-  For example: `{customAttr1: 'yolo', customAttr2: 'swag'}`
-  - secondaryContent - optional - Array - Array of secondary-content items
-  Each item has some properties:
-    - icon - required - String - A material-icons icon string
-    - class - optional - String - A custom class for the item
-    - color - optional - String - CSS color string (#00bcd4, rgba(250,40,60,0.5), ..)
-    - tooltip - optional - String - Tooltip for the item
-  - onInserted - Function - Executed when the collection has been inserted
+| Name | Type | Default value | Description |
+|-|-|-|-|
+| width | Number | 100 | Width of the collection in %. |
+| searchBar | Boolean | false | Add a searchbar to the modal header to search through the collection. |
+| onInserted | Function | null | Optional callback that fires when the collection has been fully inserted. |
+| items | Array | null | Required. Array of objects containing all collection items. Each item can be customized. See below for details. |
+##### Collection item options
+| Name | Type | Default value | Description |
+|-|-|-|-|
+| label | String | null | The label of the item |
+| attributes | Object | null | Optional custom attributes can be added to the item. For example: `{customAttr1: 'yolo', customAttr2: 'swag'}` |
+| secondaryContent | Array | null | Optional secondary content for the item. Each item has some properties. See below for details |
+##### Secondary content options:
+| Name | Type | Default value | Description |
+|-|-|-|-|
+| icon | String | null | Required. Specify a Material Icons icon string. |
+| class | String | null | An optional class can be added to the item. |
+| color | String | null | The color of the item can be changed by specifying a CSS color string. |
+| tooltip | String | null | Specify tooltip text. |
 #### getCollection()
 Returns the HTML collection.
 #### getCollectionItems()

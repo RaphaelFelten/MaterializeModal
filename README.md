@@ -64,33 +64,78 @@ Sets a custom HTML attribute.
 #### getAttribute(attribute)
 Returns the value of the specified attribute.
 #### insertForm(options)
-Inserts a form:
+Inserts a form.
 ###### Options
-- width - Integer - width of the form in % - default = 100)
-- imageField - Boolean - Specify if an image field should be added to the form - default = false)
-- fields - An array of objects containing the form fields. Each field can be customized:
-  - name - required - String - must be unique!
-  - label - required - String
-  - width - optional - integer - width in % - When using this on 2 or more consecutive fields and their combined values is 100 or less, the fields will be on one line.
-  - type - required - String - Available types:
-    - text_short (standard input)
-    - text_long (textarea)
-    - password (password input)
-    - date (Datepicker) => Default options can be set by doing M_Modal.datePickerOptions = {options}
-    - time (Timepicker) => Default options can be set by doing M_Modal.timePickerOptions = {options}
-    - checkbox (checkbox)
-    - custom (select with single selection)
-    - custom_multiple (select with multiple selections)
-  - chips - required if using type custom or custom_multiple. It's an array of objects containing the options.
-  For example: `[{tag: '1'}, {tag: '2'}, {tag: '3'}]`
-  - required - optional - Boolean - Indicate if the field has to be filled in - default = false
-  - append - optional - HTML string that will be appended to the form field
-  - icon - optional - string - icon from the material-icons package
-  - attributes - optional - array of objects
-    For example: `[{key: 'customAttribute1', val: 'yolo'}, {key: 'customAttribute2', val: 'swag'}]`
+| Name | Type | Default value | Description |
+| :------------ | :------------ | :------------ | :------------ |
+| width | Number | 100 | Width of the form in % |
+| imageField | Boolean | false | Specify if an image field should be added to the form |
+| fields | Array | null | Contains all form fields. Each field can be customized. See below for details. |
+##### Form field options:
+| Name | Type | Default value | Description |
+| :------------ | :------------ | :------------ | :------------ |
+| name | String | null | Required. Specifies the name of the field. Must be unique! |
+| label | String | null | Required. Label of the form field. |
+| width | Number| 100 | Optional. Width of the field in %. When setting this on 2 or more consecutive form fields and their combined value is 100 or less, these fields will be on one line. |
+| type | string | null | Required. Specifies the field type. Available types are: `text_short`,`text_long`,`password`,`date`,`time`,`checkbox`,`custom`,`custom_multiple`|
+| chips  | Array | null | Required when using form field type `custom` or `custom_multiple`. Structure example -> `[{tag: '1'}, {tag: '2'}, {tag: '3'}]` |
+| required | Boolean | false | Indicate if the field has to be filled in. |
+| append | String | null | HTML string to be appended to the form field |
+| icon | String | null | Icon prefix to be used for the form field. Should be an icon string from the Material Icons package. |
+| attributes | Array | null | Specify an array of custom attributes for the form field. For example: `[{key: 'customAttribute1', val: 'yolo'}, {key: 'customAttribute2', val: 'swag'}]` |
+##### Example:
+```javascript
+modal.insertForm({
+  width: 80,
+  fields: [{
+    name: 'firstname',
+    label: 'First name',
+    type: 'text_short',
+    icon: 'account_circle',
+    width: 50,
+    required: true
+    }, {
+    name: 'lastname',
+    label: 'Last name',
+    type: 'text_short',
+    icon: 'account_circle',
+    width: 50,
+    required: true
+    }, {
+    name: 'position',
+    label: 'Position',
+    type: 'custom',
+    icon: 'label',
+    required: true,
+    chips: [{
+      tag: 'Accounting'
+      }, {
+      tag: 'Sales'
+      }, {
+      tag: 'Human Resources'
+      }]
+    }, {
+    name: 'date_started',
+    label: 'Start date',
+    type: 'date',
+    icon: 'date_range',
+    required: true
+    }]
+});
+```
+
 #### setFormValues(values)
-Sets the values for the form fields. The parameter must be an object. It should look something like this:
-`{formFieldName1: 'value1', formFieldName2: 'value2', formFieldName3: 'value3', formFieldName4: 'value4',})`
+Sets the values for the form fields. The parameter must be an object.
+Considering our previous example, it should look something like this:
+```javascript
+modal.setFormValues({
+  firstname: 'Alex',
+  lastname: 'Smith',
+  position: [{tag: 'Sales'}],
+  date_started: '2018-10-10' // depends on your Datepicker setup
+});
+```
+
 In order for this to work, the property name must be equal to the name you gave the field in the 'insertForm' function.
 Setting the value for type 'custom' or 'custom_multiple' requires an array with the selected element(s), the structure must be similar to the 'chips' array when creating the form field.
 Setting the value for a 'checkbox' field requires a boolean value.
@@ -125,32 +170,76 @@ Adds a chips field to the form - the argument is an array of chips equal to the 
 #### insertCollection(options)
 Inserts a collection.
 ###### Options:
-- width - Integer - Width of the collection in % - default = 100
-- searchBar - Boolean - Indicates if a search bar should be added
-- items - required - Array - Array of objects.
-Each item has a couple of properties:
-  - label - required - String - The label of the item
-  - attributes - optional - Object - Custom HTML attributes.
-  For example: `{customAttr1: 'yolo', customAttr2: 'swag'}`
-  - secondaryContent - optional - Array - Array of secondary-content items
-  Each item has some properties:
-    - icon - required - String - A material-icons icon string
-    - class - optional - String - A custom class for the item
-    - color - optional - String - CSS color string (#00bcd4, rgba(250,40,60,0.5), ..)
-    - tooltip - optional - String - Tooltip for the item
-  - onInserted - Function - Executed when the collection has been inserted
+| Name | Type | Default value | Description |
+|-|-|-|-|
+| width | Number | 100 | Width of the collection in %. |
+| searchBar | Boolean | false | Add a searchbar to the modal header to search through the collection. |
+| onInserted | Function | null | Optional callback that fires when the collection has been fully inserted. |
+| items | Array | null | Required. Array of objects containing all collection items. Each item can be customized. See below for details. |
+##### Collection item options
+| Name | Type | Default value | Description |
+|-|-|-|-|
+| label | String | null | The label of the item |
+| attributes | Object | null | Optional custom attributes can be added to the item. For example: `{customAttr1: 'yolo', customAttr2: 'swag'}` |
+| secondaryContent | Array | null | Optional secondary content for the item. Each item has some properties. See below for details |
+##### Secondary content options:
+| Name | Type | Default value | Description |
+|-|-|-|-|
+| icon | String | null | Required. Specify a Material Icons icon string. |
+| class | String | null | An optional class can be added to the item. |
+| color | String | null | The color of the item can be changed by specifying a CSS color string. |
+| tooltip | String | null | Specify tooltip text. |
+##### Example:
+Let's consider the example from the `insertForm()` method. We've added the data to some database and now we would like to display the members of the staff:
+```javascript
+// We've got the staff data from an API
+let collection = [];
+staff.forEach(empl => {
+  collection.push({
+    label: `${empl.firstname} ${empl.lastname}`,
+    attributes: {employee-id: empl._id},
+    secondaryContent: [
+      {
+      icon: 'edit',
+      class: 'edit-employee',
+      color: '#00bcd4'
+      },
+      {
+      icon: 'delete',
+      class: 'delete-employee',
+      color: '#df0101'
+      }
+    ]
+  });
+});
+modal.insertCollection({
+  width: 90,
+  searchBar: true,
+  items: collection,
+  onInserted: () => {
+    // do something when the collection has been fully inserted
+  }
+});
+```
+
 #### getCollection()
 Returns the HTML collection.
 #### getCollectionItems()
 Returns all HTML collection items.
+#### minimize()
+Minimize the modal programatically.
+#### maximize()
+Maximize the modal programatically.
 
 ## Global options
 #### M_Modal.datePickerOptions
 To customize the MaterializeCSS Datepicker, you can set options as described in their [documentation](https://materializecss.com/pickers.html).
 `M_Modal.datePickerOptions = {options}`
+Important: you need to add `container:'body'` to the options for the picker to show up (weird bug in MaterializeCSS).
 #### M_Modal.timePickerOptions
 To customize the MaterializeCSS Timepicker, you can set options as described in their [documentation](https://materializecss.com/pickers.html).
 `M_Modal.timePickerOptions = {options}`
+Important: you need to add `container:'body'` to the options for the picker to show up (weird bug in MaterializeCSS).
 #### M_Modal.searchBarPlaceholderText
 By default, the placeholder text of the searchbar in the header of the modal is `Search..`. This can be changed like this:
 `M_Modal.searchBarPlaceholderText = 'Search..'`

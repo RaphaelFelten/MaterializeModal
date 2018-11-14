@@ -27,12 +27,21 @@ let myFirstModal = new Modal({
 });
 ```
 
+## Presets
+Predefined modals can be used for different purposes:
+#### M_Modal.presets.alert(message)
+Shows a small modal with an alert message.
+#### M_Modal.presets.error(message)
+Shows a small modal with an error message.
+
+
 ## Options:
 | Name | Type | Default value | Description |
 | :------------ | :------------ | :------------ | :------------ |
 | type | String | `modal-fixed-footer` | Type of the modal (fixed-footer, bottom-sheet, ..) |
 | width | Integer | Default width of the MaterializeCSS library | width of the modal in % |
 | height | Integer | Default height of the MaterializeCSS library | height of the modal in 'vh' |
+| title | String | null | Title of the modal |
 | footerButtons | String | null | Buttons which will appear in the footer of the modal - Can contain HTML |
 | openButton | String | null | HTML query string of the element that opens the modal |
 | windowButtons | Boolean | true | Buttons on the top right of the modal (minimize, maximize, close) |

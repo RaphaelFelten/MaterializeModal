@@ -272,7 +272,7 @@ Shows a small modal with an alert message.
 ### M_Modal.presets.error(message)
 Shows a small modal with an error message.
 ### M_Modal.presets.confirm(message, callback)
-Shows a small modal for confirmation puposes. Use it like this:
+Shows a small modal for confirmation purposes. Use it like this:
 ``` javascript
 M_Modal.presets.confirm('Please confirm this action', (confirmed) {
   if(confirmed) {

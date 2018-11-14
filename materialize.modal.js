@@ -605,6 +605,26 @@ M_Modal.presets.error = (msg) => {
         onClose: (m) => m.destroy()
     }).open();
 }
+M_Modal.presets.confirm = (msg, cb) => {
+    return new Modal({
+        width: 25,
+        height: 20,
+        title: 'Confirm',
+        windowButtons: false,
+        footerButtons: '<a href="#!" class="btn btn-flat modal-deny">Cancel</a><a href="#!" class="btn btn-flat modal-confirm">OK</a>',
+        fixedContent: msg,
+        onOpen: (m) => {
+            m.select('.modal-confirm').addEventListener('click', () => {
+                cb(true);
+                m.destroy();
+            });
+            m.select('.modal-deny').addEventListener('click', () => {
+                cb(false);
+                m.destroy();
+            });
+        }
+    }).open();
+}
 
 
 

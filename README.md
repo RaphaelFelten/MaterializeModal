@@ -271,4 +271,14 @@ Predefined modals can be used for different purposes:
 Shows a small modal with an alert message.
 ### M_Modal.presets.error(message)
 Shows a small modal with an error message.
-
+### M_Modal.presets.confirm(message, callback)
+Shows a small modal for confirmation puposes. Use it like this:
+``` javascript
+M_Modal.presets.confirm('Please confirm this action', (confirmed) {
+  if(confirmed) {
+    // Confirmed, do something
+  } else {
+    // Denied, do something else
+  }
+});
+```

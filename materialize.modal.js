@@ -5,6 +5,7 @@ class Modal {
     constructor(opt) {
         this.name = 'M_Modal_' + M_Modal.instances.length;
         this.title = opt.title || '';
+        this.titleColor = opt.titleColor ? 'color:' + opt.titleColor + ';' : '';
         this.width = opt.width || 70;
         this.height = opt.height || 70;
         this.topMargin = Math.floor((100 - this.height) / 2);
@@ -23,7 +24,7 @@ class Modal {
         this.hasForm = false;
         this.wasOpened = false;
         this.fixedContent = opt.fixedContent || '';
-        this.template = '<div id="' + this.name + '" class="modal ' + this.type + '" style="' + this.topMarginCSS + '"><div class="modal-header"><h4><span style="font-size: 22px;">' + this.title + '</span></h4></div><div class="modal-content" style="padding-top: 17px; height: calc(100% - 112px);">' + this.fixedContent + '<div class="modal-content-dynamic"></div></div><div class="modal-footer">' + this.footerButtons + '</div>' + this.windowButtons + '</div>';
+        this.template = '<div id="' + this.name + '" class="modal ' + this.type + '" style="' + this.topMarginCSS + '"><div class="modal-header"><h4><span style="font-size: 22px;' + this.titleColor + '">' + this.title + '</span></h4></div><div class="modal-content" style="padding-top: 17px; height: calc(100% - 112px);">' + this.fixedContent + '<div class="modal-content-dynamic"></div></div><div class="modal-footer">' + this.footerButtons + '</div>' + this.windowButtons + '</div>';
         document.body.insertAdjacentHTML('beforeend', this.template);
         this.domElement = document.getElementById(this.name);
         this.instance = M.Modal.init(this.domElement, {
@@ -50,6 +51,7 @@ class Modal {
             }
         });
         this.selectAll('.modal-close').forEach(elt => elt.addEventListener('click', () => this.close()));
+        if (this.select('.modal-confirm')) this.select('.modal-confirm').addEventListener('click', () => this.onOpen(this, 'confirmed'));
         if (this.openButton) document.querySelectorAll(this.openButton).forEach(elt => elt.addEventListener('click', () => this.open()));
         if (this.windowButtons) {
             this.select('.modal-minimize').addEventListener('click', () => this.minimize());
@@ -76,6 +78,7 @@ class Modal {
             if (e.which == 13) this.select('.modal-submit-form').click();
         });
         if (this.onOpen) this.onOpen(this, cb);
+        return this;
     }
     isOpen() {
         return this.domElement.classList.contains('open');
@@ -84,6 +87,11 @@ class Modal {
         this.instance.close();
         this.removeImage();
         if (cb) cb(this);
+    }
+    destroy() {
+        this.instance.destroy();
+        this.domElement.parentNode.removeChild(this.domElement);
+        M_Modal.instances = M_Modal.instances.filter(m => m.name !== this.name);
     }
     on(event, cb) {
         this.domElement.removeEventListener(event, null);
@@ -568,6 +576,36 @@ function modalFormField(opt) {
             return console.error('type "' + opt.type + '" is not defined in the modalFormField function');
     }
 }
+
+
+
+// Modal presets
+M_Modal.presets = {};
+M_Modal.presets.alert = (msg) => {
+    return new Modal({
+        width: 25,
+        height: 20,
+        title: 'Alert',
+        titleColor: '#fbc02d',
+        windowButtons: false,
+        footerButtons: '<a href="#!" class="btn btn-flat modal-close">OK</a>',
+        fixedContent: msg,
+        onClose: (m) => m.destroy()
+    }).open();
+}
+M_Modal.presets.error = (msg) => {
+    return new Modal({
+        width: 25,
+        height: 20,
+        title: 'Error',
+        titleColor: '#df0101',
+        windowButtons: false,
+        footerButtons: '<a href="#!" class="btn btn-flat modal-close">OK</a>',
+        fixedContent: msg,
+        onClose: (m) => m.destroy()
+    }).open();
+}
+
 
 
 

@@ -41,6 +41,8 @@ let myFirstModal = new Modal({
 | width | Integer | Default width of the MaterializeCSS library | width of the modal in % |
 | height | Integer | Default height of the MaterializeCSS library | height of the modal in 'vh' |
 | title | String | null | Title of the modal |
+| titleColor | String | null | Text color of the title |
+| titleBackgroundColor | String | null | Background color of the title |
 | footerButtons | String | null | Buttons which will appear in the footer of the modal - Can contain HTML |
 | openButton | String | null | HTML query string of the element that opens the modal |
 | windowButtons | Boolean | true | Buttons on the top right of the modal (minimize, maximize, close) |

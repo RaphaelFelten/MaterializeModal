@@ -1,6 +1,13 @@
 # MaterializeModal
 Work more efficiently with modals from the MaterializeCSS framework.
 
+- [Installation](#installation)
+- [Options](#options)
+- [Methods](#methods)
+- [Global options](#global-options)
+- [Helper](#helper)
+- [Presets](#presets)
+
 I've been working on a single-page application for our company in which I heavily used modals for all the functionality. I quickly realized that adding all those modals to the HTML file was kind of a mess and doing anything dynamic was a pain in the ass (forms, collections, ..).
 That's why I've decided to write this small library. I just wanted to share this in case someone might find it helpful. Feel free to suggest any improvements that could be made.
 
@@ -33,6 +40,7 @@ let myFirstModal = new Modal({
 | type | String | `modal-fixed-footer` | Type of the modal (fixed-footer, bottom-sheet, ..) |
 | width | Integer | Default width of the MaterializeCSS library | width of the modal in % |
 | height | Integer | Default height of the MaterializeCSS library | height of the modal in 'vh' |
+| title | String | null | Title of the modal |
 | footerButtons | String | null | Buttons which will appear in the footer of the modal - Can contain HTML |
 | openButton | String | null | HTML query string of the element that opens the modal |
 | windowButtons | Boolean | true | Buttons on the top right of the modal (minimize, maximize, close) |
@@ -256,3 +264,11 @@ By default, the placeholder text of the searchbar in the header of the modal is 
 ## Helper
 ##### Submit form by pressing the Enter key
 Adding the class 'modal-submit-form' to an element triggers its click event when pressing the Enter key.
+
+## Presets
+Predefined modals can be used for different purposes:
+### M_Modal.presets.alert(message)
+Shows a small modal with an alert message.
+### M_Modal.presets.error(message)
+Shows a small modal with an error message.
+

@@ -27,14 +27,6 @@ let myFirstModal = new Modal({
 });
 ```
 
-## Presets
-Predefined modals can be used for different purposes:
-#### M_Modal.presets.alert(message)
-Shows a small modal with an alert message.
-#### M_Modal.presets.error(message)
-Shows a small modal with an error message.
-
-
 ## Options:
 | Name | Type | Default value | Description |
 | :------------ | :------------ | :------------ | :------------ |
@@ -265,3 +257,11 @@ By default, the placeholder text of the searchbar in the header of the modal is 
 ## Helper
 ##### Submit form by pressing the Enter key
 Adding the class 'modal-submit-form' to an element triggers its click event when pressing the Enter key.
+
+## Presets
+Predefined modals can be used for different purposes:
+### M_Modal.presets.alert(message)
+Shows a small modal with an alert message.
+### M_Modal.presets.error(message)
+Shows a small modal with an error message.
+

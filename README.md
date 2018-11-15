@@ -284,3 +284,14 @@ M_Modal.presets.confirm('Please confirm this action', (confirmed) => {
   }
 });
 ```
+### M_Modal.presets.password(callback)
+Shows a small modal to enter a password. Use it like this:
+``` javascript
+M_Modal.presets.password((pw) => {
+  if(pw) {
+    // Password was entered and the OK button has been clicked
+  } else {
+    // Cancel button has been clicked, do something else
+  }
+});
+```

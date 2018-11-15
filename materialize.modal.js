@@ -629,6 +629,37 @@ M_Modal.presets.confirm = (msg, cb) => {
         }
     }).open();
 }
+M_Modal.presets.password = (cb) => {
+    return new Modal({
+        width: 25,
+        height: 25,
+        title: 'Enter password',
+        titleColor: '#fff',
+        titleBackgroundColor: '#00bcd4',
+        windowButtons: false,
+        footerButtons: '<a href="#!" class="btn-flat modal-deny">Cancel</a><a href="#!" class="btn-flat cyan white-text modal-confirm">OK</a>',
+        onOpen: (m) => {
+            m.select('.modal-confirm').addEventListener('click', () => {
+                let pw = m.getFormValues().password;
+                if (pw) {
+                    cb(pw);
+                    m.destroy();
+                }
+            });
+            m.select('.modal-deny').addEventListener('click', () => {
+                cb(false);
+                m.destroy();
+            });
+            m.insertForm({
+                fields: [{
+                    name: 'password',
+                    type: 'password',
+                    label: 'Password'
+                }]
+            });
+        }
+    }).open();
+}
 
 
 

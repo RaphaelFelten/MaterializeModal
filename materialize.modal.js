@@ -610,7 +610,7 @@ M_Modal.presets.error = (msg) => {
 M_Modal.presets.confirm = (msg, cb) => {
     return new Modal({
         width: 25,
-        height: 20,
+        height: 22,
         title: 'Confirm',
         titleColor: '#fff',
         titleBackgroundColor: '#00bcd4',

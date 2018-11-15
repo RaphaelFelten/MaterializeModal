@@ -589,7 +589,7 @@ M_Modal.presets.alert = (msg) => {
         titleColor: '#fff',
         titleBackgroundColor: '#fbc02d',
         windowButtons: false,
-        footerButtons: '<a href="#!" class="btn-flat modal-close">OK</a>',
+        footerButtons: '<a href="#!" class="btn-flat waves-effect modal-close">OK</a>',
         fixedContent: msg,
         onClose: (m) => m.destroy()
     }).open();
@@ -602,7 +602,7 @@ M_Modal.presets.error = (msg) => {
         titleColor: '#fff',
         titleBackgroundColor: '#d32f2f',
         windowButtons: false,
-        footerButtons: '<a href="#!" class="btn-flat modal-close">OK</a>',
+        footerButtons: '<a href="#!" class="btn-flat waves-effect modal-close">OK</a>',
         fixedContent: msg,
         onClose: (m) => m.destroy()
     }).open();
@@ -615,7 +615,7 @@ M_Modal.presets.confirm = (msg, cb) => {
         titleColor: '#fff',
         titleBackgroundColor: '#00bcd4',
         windowButtons: false,
-        footerButtons: '<a href="#!" class="btn-flat modal-deny">Cancel</a><a href="#!" class="btn-flat cyan white-text modal-confirm">OK</a>',
+        footerButtons: '<a href="#!" class="btn-flat waves-effect modal-deny">Cancel</a><a href="#!" class="btn-flat waves-effect cyan white-text modal-confirm">OK</a>',
         fixedContent: msg,
         onOpen: (m) => {
             m.select('.modal-confirm').addEventListener('click', () => {
@@ -629,15 +629,46 @@ M_Modal.presets.confirm = (msg, cb) => {
         }
     }).open();
 }
-M_Modal.presets.password = (cb) => {
+M_Modal.presets.prompt = (title, cb) => {
     return new Modal({
         width: 25,
         height: 25,
-        title: 'Enter password',
+        title: title,
         titleColor: '#fff',
         titleBackgroundColor: '#00bcd4',
         windowButtons: false,
-        footerButtons: '<a href="#!" class="btn-flat modal-deny">Cancel</a><a href="#!" class="btn-flat cyan white-text modal-confirm">OK</a>',
+        footerButtons: '<a href="#!" class="btn-flat waves-effect modal-deny">Cancel</a><a href="#!" class="btn-flat waves-effect cyan white-text modal-confirm">OK</a>',
+        onOpen: (m) => {
+            m.select('.modal-confirm').addEventListener('click', () => {
+                let input = m.getFormValues().input;
+                if (input) {
+                    cb(input);
+                    m.destroy();
+                }
+            });
+            m.select('.modal-deny').addEventListener('click', () => {
+                cb(false);
+                m.destroy();
+            });
+            m.insertForm({
+                fields: [{
+                    name: 'input',
+                    type: 'text_short',
+                    label: title
+                }]
+            });
+        }
+    }).open();
+}
+M_Modal.presets.password = (title, cb) => {
+    return new Modal({
+        width: 25,
+        height: 25,
+        title: title,
+        titleColor: '#fff',
+        titleBackgroundColor: '#00bcd4',
+        windowButtons: false,
+        footerButtons: '<a href="#!" class="btn-flat waves-effect modal-deny">Cancel</a><a href="#!" class="btn-flat waves-effect cyan white-text modal-confirm">OK</a>',
         onOpen: (m) => {
             m.select('.modal-confirm').addEventListener('click', () => {
                 let pw = m.getFormValues().password;
@@ -654,7 +685,7 @@ M_Modal.presets.password = (cb) => {
                 fields: [{
                     name: 'password',
                     type: 'password',
-                    label: 'Password'
+                    label: title
                 }]
             });
         }
@@ -666,7 +697,7 @@ M_Modal.presets.password = (cb) => {
 
 // Alternative to the toFixed() method. The toFixed() method sometimes returns rounded values (i.e. 16.666666668 becomes 16.667 or 16.7 when using the toFixed() method)
 // This is not correct since we want a fixed number of decimals of the existing number, not of the rounded number.
-Number.prototype.toFixedDecimals = function (n) {
+Number.prototype.toFixedDecimals = (n) => {
     return this.toString().match(/[^.]*/i)[0] + '.' + this.toString().match(/\.(.*)/)[1].substring(0, n);
 }
 

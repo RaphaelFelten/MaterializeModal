@@ -276,7 +276,7 @@ Shows a small modal with an error message.
 ### M_Modal.presets.confirm(message, callback)
 Shows a small modal for confirmation purposes. Use it like this:
 ``` javascript
-M_Modal.presets.confirm('Please confirm this action', (confirmed) {
+M_Modal.presets.confirm('Please confirm this action', (confirmed) => {
   if(confirmed) {
     // Confirmed, do something
   } else {

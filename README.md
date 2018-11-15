@@ -253,11 +253,11 @@ Maximize the modal programatically.
 ## Global options
 #### M_Modal.datePickerOptions
 To customize the MaterializeCSS Datepicker, you can set options as described in their [documentation](https://materializecss.com/pickers.html).
-`M_Modal.datePickerOptions = {options}`
+`M_Modal.datePickerOptions = {options}`<br/>
 Important: you need to add `container:'body'` to the options for the picker to show up (weird bug in MaterializeCSS).
 #### M_Modal.timePickerOptions
 To customize the MaterializeCSS Timepicker, you can set options as described in their [documentation](https://materializecss.com/pickers.html).
-`M_Modal.timePickerOptions = {options}`
+`M_Modal.timePickerOptions = {options}`<br/>
 Important: you need to add `container:'body'` to the options for the picker to show up (weird bug in MaterializeCSS).
 #### M_Modal.searchBarPlaceholderText
 By default, the placeholder text of the searchbar in the header of the modal is `Search..`. This can be changed like this:

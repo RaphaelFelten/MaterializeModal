@@ -583,34 +583,34 @@ function modalFormField(opt) {
 M_Modal.presets = {};
 M_Modal.presets.alert = (msg) => {
     return new Modal({
-        width: 25,
+        width: 30,
         height: 20,
         title: 'Alert',
         titleColor: '#fff',
         titleBackgroundColor: '#fbc02d',
         windowButtons: false,
-        footerButtons: '<a href="#!" class="btn-flat waves-effect modal-close">OK</a>',
+        footerButtons: '<a href="#!" class="btn-flat yellow darken-2 white-text waves-effect modal-close">OK</a>',
         fixedContent: msg,
         onClose: (m) => m.destroy()
     }).open();
 }
 M_Modal.presets.error = (msg) => {
     return new Modal({
-        width: 25,
+        width: 30,
         height: 20,
         title: 'Error',
         titleColor: '#fff',
         titleBackgroundColor: '#d32f2f',
         windowButtons: false,
-        footerButtons: '<a href="#!" class="btn-flat waves-effect modal-close">OK</a>',
+        footerButtons: '<a href="#!" class="btn-flat red darken-1 white-text waves-effect modal-close">OK</a>',
         fixedContent: msg,
         onClose: (m) => m.destroy()
     }).open();
 }
 M_Modal.presets.confirm = (msg, cb) => {
     return new Modal({
-        width: 25,
-        height: 22,
+        width: 30,
+        height: 25,
         title: 'Confirm',
         titleColor: '#fff',
         titleBackgroundColor: '#00bcd4',
@@ -631,7 +631,7 @@ M_Modal.presets.confirm = (msg, cb) => {
 }
 M_Modal.presets.prompt = (title, cb) => {
     return new Modal({
-        width: 25,
+        width: 30,
         height: 25,
         title: title,
         titleColor: '#fff',
@@ -662,7 +662,7 @@ M_Modal.presets.prompt = (title, cb) => {
 }
 M_Modal.presets.password = (title, cb) => {
     return new Modal({
-        width: 25,
+        width: 30,
         height: 25,
         title: title,
         titleColor: '#fff',

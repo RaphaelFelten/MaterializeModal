@@ -273,13 +273,11 @@ Predefined modals can be used for different purposes:
 Shows a small modal with an alert message.
 ``` javascript
 M_Modal.presets.alert('Attention!');
-});
 ```
 ### M_Modal.presets.error(message)
 Shows a small modal with an error message.
 ``` javascript
 M_Modal.presets.error('An error ocurred, please try again later.');
-});
 ```
 ### M_Modal.presets.confirm(message, callback)
 Shows a small modal for confirmation purposes. Use it like this:

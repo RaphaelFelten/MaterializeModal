@@ -15,6 +15,7 @@ That's why I've decided to write this small library. I just wanted to share this
 If you'd like to use this library, you'll need the latest version of [MaterializeCSS](https://materializecss.com/).
 Then, simply include `materialize.modal.min.js` & `materialize.modal.min.css` in your HTML file. No initialization needed.
 Also, no need to include JQuery.
+Alternatively, you can use npm: `npm i materializemodal`
 
 ## Example:
 ```javascript

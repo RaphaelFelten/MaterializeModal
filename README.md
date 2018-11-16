@@ -236,7 +236,7 @@ let collection = [];
 staff.forEach(empl => {
   collection.push({
     label: `${empl.firstname} ${empl.lastname}`,
-    attributes: {employee-id: empl._id},
+    attributes: {"employee-id": empl._id},
     secondaryContent: [
       {
       icon: 'edit',
@@ -252,7 +252,6 @@ staff.forEach(empl => {
   });
 });
 modal.insertCollection({
-  width: 90,
   searchBar: true,
   items: collection,
   onInserted: () => {

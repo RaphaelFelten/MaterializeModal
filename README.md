@@ -64,6 +64,16 @@ Opens the modal. If needed, custom data can be passed in to the `onOpen(modal, d
 Returns a boolean value indicating if the modal is currently open.
 #### close(callback)
 Closes the modal. An optional callback function can be passed in that executes when the modal is closed (and gets the modal object as its parameter).
+#### select(el)
+Returns an element in the modal based on a query string. For example:
+```javascript
+let element = modal.select('#myElement');
+```
+#### selectAll(el)
+Returns all elements in the modal based on a query string. For example:
+```javascript
+let elements = modal.selectAll('.my-element');
+```
 #### on(event, callback)
 Binds an event (click, keypress, ...) to the modal. The callback gets the `event` data as its parameter.
 #### setContent(content)
@@ -155,14 +165,23 @@ modal.setFormValues({
   date_started: '2018-10-10' // depends on your Datepicker setup
 });
 ```
-
 In order for this to work, the property name must be equal to the name you gave the field in the 'insertForm' function.
 Setting the value for type 'custom' or 'custom_multiple' requires an array with the selected element(s), the structure must be similar to the 'chips' array when creating the form field.
 Setting the value for a 'checkbox' field requires a boolean value.
 #### getFormValues(mode)
 Returns the form values. An optional argument can be passed in to specify how the data should be structured:
-`single` or `combined` - default is combined.
-If there are required fields that are not filled in, this method returns this object: `{requiredFieldMissing: true}`
+`single` or `combined` - default is combined.<br/>
+If there are required fields that are not filled in, this method returns this object: `{requiredFieldMissing: true}`. In addition, the missing fields' bottom border will be colored in red to give the user some kind of visual feedback.
+Example:
+```javascript
+let values = modal.getFormValues();
+if(values.requiredFieldMissing) {
+  // One or more required field(s) not filled in, display some kind of error message
+} else {
+  // All good
+  console.log(values);
+}
+```
 #### getFormFields()
 Returns all HTML form fields.
 #### getFormField(field)
@@ -237,7 +256,9 @@ modal.insertCollection({
   searchBar: true,
   items: collection,
   onInserted: () => {
-    // do something when the collection has been fully inserted
+    // do something when the collection has been fully inserted, for example:
+    modal.selectAll('.edit-employee').forEach(el => el.addEventListener('click', (e) => /*open modal to edit employee*/));
+    modal.selectAll('.delete-employee').forEach(el => el.addEventListener('click', (e) => /*delete employee*/));
   }
 });
 ```

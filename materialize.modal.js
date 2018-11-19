@@ -18,7 +18,7 @@ class Modal {
         this.preventScrolling = opt.preventScrolling || true;
         this.inDuration = opt.inDuration || 250;
         this.outDuration = opt.outDuration || 250;
-        this.windowButtons = opt.windowButtons === false ? '' : '<div class="modal-windowButtons"><div class="minimize-button-modal modal-windowbutton modal-minimize"><i class="material-icons">minimize</i></div><div class="maximize-button-modal modal-windowbutton modal-maximize"><i class="material-icons">filter_none</i></div><div class="close-button-modal modal-windowbutton modal-close"><i class="material-icons">close</i></div></div>';
+        this.windowButtons = opt.windowButtons === false ? '' : '<div class="modal-windowButtons" style="color:' + getTextColorFromBrightness(opt.titleBackgroundColor) + ';"><div class="minimize-button-modal modal-windowbutton modal-minimize"><i class="material-icons">minimize</i></div><div class="maximize-button-modal modal-windowbutton modal-maximize"><i class="material-icons">filter_none</i></div><div class="close-button-modal modal-windowbutton modal-close"><i class="material-icons">close</i></div></div>';
         this.type = opt.type == 'default' ? '' : 'modal-fixed-footer';
         this.onOpen = opt.onOpen || null;
         this.onClose = opt.onClose || null;
@@ -192,9 +192,7 @@ class Modal {
                 }
             }
         });
-        if (obj.type) {
-            if (obj.type == 'custom' || obj.type == 'custom_multiple') this.addChipsField(obj.chips);
-        }
+        if (obj.chips) this.addChipsField(obj.chips);
         M.FormSelect.init(document.querySelectorAll('select'));
         M.updateTextFields();
     }
@@ -237,11 +235,11 @@ class Modal {
         });
         if (this.chipsField) {
             if (mode == 'combined') {
-                result.chips = this.chipsField[0].M_Chips.chipsData;
+                result.chips = M.Chips.getInstance(this.chipsField).chipsData;
             } else if (mode == 'single') {
                 result.push({
                     field: 'chips',
-                    value: this.chipsField[0].M_Chips.chipsData
+                    value: M.Chips.getInstance(this.chipsField).chipsData
                 });
             }
         }
@@ -839,4 +837,20 @@ function fadeOut(el, _t) {
         if (+el.style.opacity > 0)(window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
     }
     tick();
+}
+
+
+
+// Check if color is dark
+function getTextColorFromBrightness(_c) {
+    if (!_c) return false;
+    let c = _c.substring(1); // strip #
+    if (c.length < 4) c += c[0] + c[0] + c[0];
+    let rgb = parseInt(c, 16); // convert rrggbb to decimal
+    let r = (rgb >> 16) & 0xff; // extract red
+    let g = (rgb >> 8) & 0xff; // extract green
+    let b = (rgb >> 0) & 0xff; // extract blue
+    let luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+    if (luma < 170) return '#fff';
+    else return '#9e9e9e';
 }

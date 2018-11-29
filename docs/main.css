@@ -1,0 +1,9 @@
+body {
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    background: url(british-columbia-3787200_1920.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}

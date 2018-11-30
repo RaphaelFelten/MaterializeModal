@@ -1,3 +1,6 @@
+.input-field {
+	float: left !important;
+}
 .modal-header {
     height: 55px;
     line-height: 55px;
@@ -22,6 +25,7 @@
     width: 35px;
     height: 100%;
     cursor: pointer;
+    border-radius: 3px;
     transition: .05s;
 }
 .modal-windowButtons > div > i {
@@ -32,6 +36,9 @@
 .modal-windowButtons > div:hover {
     background: rgba(20, 20, 20, 0.6) !important;
     color: #fff;
+}
+.modal-windowButtons > div:hover + i {
+    transform: scale(1.5);
 }
 .modal-img-file {
     display: none;

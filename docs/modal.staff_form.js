@@ -1,6 +1,6 @@
 let modal_staff_form = new Modal({
     width: 40,
-    height: 70,
+    height: 50,
     windowButtons: false,
     onOpen: (modal) => {
         modal.insertForm({
@@ -9,14 +9,14 @@ let modal_staff_form = new Modal({
                 label: 'First name',
                 type: 'text_short',
                 icon: 'account_circle',
-                width: 45,
+                width: 50,
                 required: true
             }, {
                 name: 'lastname',
                 label: 'Last name',
                 type: 'text_short',
                 icon: 'account_circle',
-                width: 45,
+                width: 50,
                 required: true
             }, {
                 name: 'position',

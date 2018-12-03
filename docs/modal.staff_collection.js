@@ -37,7 +37,7 @@ let modal_staff_collection = new Modal({
                         modal_staff_form.setTitle('Edit employee');
                         modal_staff_form.setFormValues(staff.filter(empl => empl['employee_id'] == empl_id)[0]);
                         modal_staff_form.setFooterButtons('<div class="btn-flat modal-close">Cancel</div><div id="update_employee" class="btn-flat white-text cyan">Update</div>');
-                        modal_staff_form.select('#update_employee').addEventListener('click', (e) => {
+                        modal_staff_form.select('#update_employee').addEventListener('click', () => {
                             let values = modal_staff_form.getFormValues();
                             if (values.requiredFieldMissing) {
                                 M_Modal.presets.error('Required field(s) missing');
@@ -69,11 +69,11 @@ let modal_staff_collection = new Modal({
     }
 });
 
-document.querySelector('#new_employee').addEventListener('click', (e) => {
+document.querySelector('#new_employee').addEventListener('click', () => {
     modal_staff_form.open();
     modal_staff_form.setTitle('Add new employee');
     modal_staff_form.setFooterButtons('<div class="btn-flat modal-close">Cancel</div><div id="add_employee" class="btn-flat white-text cyan">Add</div>');
-    modal_staff_form.select('#add_employee').addEventListener('click', (e) => {
+    modal_staff_form.select('#add_employee').addEventListener('click', () => {
         let values = modal_staff_form.getFormValues();
         if (values.requiredFieldMissing) {
             M_Modal.presets.error('Required field(s) missing');

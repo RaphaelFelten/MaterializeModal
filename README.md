@@ -1,6 +1,7 @@
 # MaterializeModal
 Work more efficiently with modals from the MaterializeCSS framework.
 
+- [Demo](#demo)
 - [Installation](#installation)
 - [Options](#options)
 - [Methods](#methods)

@@ -51,7 +51,7 @@ let modal_staff_collection = new Modal({
                         modal_staff_form.setFooterButtons('<div class="btn-flat modal-close">Cancel</div><div id="update_employee" class="btn-flat white-text cyan">Update</div>');
                         // add a click event listener to be able to update the employee in the array
                         modal_staff_form.select('#update_employee').addEventListener('click', () => {
-                            let values = modal_staff_form.getFormValues(); // the the form values
+                            let values = modal_staff_form.getFormValues(); // get the form values
                             if (values.requiredFieldMissing) { // check if there are required fields that aren't filled in
                                 M_Modal.presets.error('Required field(s) missing');
                             } else { // if not, update the data in the array
@@ -65,10 +65,12 @@ let modal_staff_collection = new Modal({
                                 modal_staff_collection.onOpen(modal_staff_collection);
                                 // if you want to optimize this, here's an example:
                                 // you can select the item that's been updated by its 'employee-id' attribute and update the title
+                                /*
                                 modal_staff_collection
                                     .getCollection() // get the collection DOM element
                                     .querySelector('[employee-id="' + empl_id + '"] .title') // select the title of the updated element
                                     .textContent = `${values.firstname} ${values.lastname}`; // and finally, update the text content
+                                */
                             }
                         });
                     }));

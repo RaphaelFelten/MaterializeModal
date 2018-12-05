@@ -9,8 +9,8 @@ class Modal {
         this.titleBackgroundColor = opt.titleBackgroundColor ? 'background:' + opt.titleBackgroundColor + ';' : '';
         this.width = opt.width || 70;
         this.height = opt.height || 70;
-        this.topMargin = Math.floor((100 - this.height) / 2);
-        this.topMarginCSS = 'top:' + this.topMargin + 'vh;';
+        this.topMargin = opt.type == 'bottom-sheet' ? '' : Math.floor((100 - this.height) / 2);
+        this.topMarginCSS = this.topMargin ? 'top:' + this.topMargin + 'vh;' : '';
         this.footerButtons = opt.footerButtons || '';
         this.openButton = opt.openButton || null;
         this.opacity = opt.opacity || 0.5;
@@ -19,7 +19,7 @@ class Modal {
         this.inDuration = opt.inDuration || 250;
         this.outDuration = opt.outDuration || 250;
         this.windowButtons = opt.windowButtons === false ? '' : '<div class="modal-windowButtons" style="color:' + getTextColorFromBrightness(opt.titleBackgroundColor) + ';"><div class="minimize-button-modal modal-windowbutton modal-minimize"><i class="material-icons">minimize</i></div><div class="maximize-button-modal modal-windowbutton modal-maximize"><i class="material-icons">filter_none</i></div><div class="close-button-modal modal-windowbutton modal-close"><i class="material-icons">close</i></div></div>';
-        this.type = opt.type == 'default' ? '' : 'modal-fixed-footer';
+        this.type = opt.type ? opt.type == 'default' ? '' : opt.type : 'modal-fixed-footer';
         this.onOpen = opt.onOpen || null;
         this.onClose = opt.onClose || null;
         this.hasForm = false;
@@ -67,10 +67,12 @@ class Modal {
     }
     open(cb) {
         this.instance.open();
-        this.domElement.style.height = this.height + 'vh';
-        this.domElement.style.maxHeight = this.height + 'vh';
-        this.domElement.style.width = this.width + '%';
-        this.domElement.style.maxWidth = this.maxWidth + '%';
+        if (this.type != 'bottom-sheet') {
+            this.domElement.style.height = this.height + 'vh';
+            this.domElement.style.maxHeight = this.height + 'vh';
+            this.domElement.style.width = this.width + '%';
+            this.domElement.style.maxWidth = this.maxWidth + '%';
+        }
         this.select('.modal-content').scrollTop = 0;
         delete this.chipsField;
         this.removeImage();
